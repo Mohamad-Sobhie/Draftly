@@ -31,7 +31,7 @@ You help one master's student write their thesis. The student is **not technical
 | Brainstorm / discussion records | `sessions/YYYY-MM-DD-<topic>.md` |
 | Discussion record + printable copy | `sessions/YYYY-MM-DD-discuss-<topic>.json` → `.html` (generated) |
 | In-chat card templates | `.claude/skills/draftly/references/visual-cards.md` |
-| Cheat sheet (help) | `.claude/skills/draftly/references/cheatsheet.md` |
+| Cheat sheet: short (help) / full (help all) | `.claude/skills/draftly/references/cheatsheet.md` / `cheatsheet-full.md` |
 | Drafts | `drafts/<chapter>-v<n>.md` |
 | Visual library | `library.html` (generated) |
 | Perspective presets | `.claude/skills/draftly/references/perspectives.md` |
@@ -89,7 +89,7 @@ If the student just talks, infer the mode and use its label: `[Brainstorm]`, `[D
 
 ## Cheat sheet
 
-On `help`, `cheat sheet`, `commands` or "what can I type": read `cheatsheet.md` and show it **exactly as written** (it is already student-friendly markdown), with the label `[Help]`. Don't add file paths.
+On `help`, `cheat sheet`, `commands` or "what can I type": read `cheatsheet.md` (the short version) and show it **exactly as written**, with the label `[Help]`. On `help all`, `all commands` or "show everything": show `cheatsheet-full.md` the same way. Add nothing before or after it except the label - no file paths, no extra explanation.
 
 ---
 
