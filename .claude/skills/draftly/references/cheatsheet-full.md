@@ -42,7 +42,7 @@ More: `debate the Skeptic and the Historian` · `play the examiner` · `go deepe
 | `fix the footnotes in [chapter]` | OSCOLA (or your style) clean-up |
 | `can my library fill the gaps in [chapter]?` | matches [CITATION NEEDED] markers to your sources |
 
-Every draft is a new version (v1, v2…), never overwritten, and ends with **Notes for you** and a **style check**.
+Before writing, you get a short **plan** to check: say **go**, change it, or say *just write it* to skip. Every draft is a new version (v1, v2…), never overwritten, and ends with **Notes for you** and a **style check**.
 
 ### 📚 Library
 | Type | Example |

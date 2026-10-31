@@ -15,7 +15,7 @@ Example: `/draftly discuss whether the PRA should regulate LDI funds directly`
 ### ✍️ Write
 | Type | You get |
 |---|---|
-| `/draftly draft [section]: [your points]` | a draft from your points, with footnotes |
+| `/draftly draft [section]: [your points]` | first a plan to check, then (after you say **go**) the draft with footnotes |
 | `/draftly polish this, keep my voice: [text]` | your own text, cleaned up |
 
 Example: `/draftly draft 3.1: banks only see their own exposure; 2022 showed the gap; my view is…`

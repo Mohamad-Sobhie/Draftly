@@ -162,6 +162,29 @@ Without the visual tool, give stages 2-4 as compact markdown (headings + short b
 
 **Input rule:** work only from the student's own points, outline, `sessions/` and `notes/`. If there's too little material, ask for the key points first ("Before I draft 3.2, give me your 3-5 main points in any order - bullet points are fine").
 
+**Preview first - never write a draft straight away.** Before drafting a section (new draft, rewrite, or "make it shorter/longer"), show a plan and **wait for the student's go-ahead**. Write nothing to `drafts/` yet. Label it `[Write · plan]`:
+
+```
+[Write · plan] 3.1 Entity-based regulation · about 800 words (your limit leaves ~1,200 for chapter 3)
+
+1. Opening - supervisors see NBFI risk mainly through bank returns  ✅ fsma-2023, s 25
+2. The 2022 LDI episode - each bank saw only its own exposure     ⚠️ needs: Bank of England report on 2022
+3. What an entity-based approach can and can't reach              (your point 3, no source needed)
+4. Bridge to 3.2 - the residual risk outside banks
+
+Sources I'll cite: fsma-2023 · Gaps: 1 citation needed
+To confirm: open with the 2022 example instead? Keep "entity-based" as your main term?
+
+Reply "go" to write it, or tell me what to change.
+```
+
+- One line per paragraph: its point, and the source it will cite (✅ in the library / ⚠️ needs a source). Map every paragraph back to the student's own points; if a planned paragraph has no basis in their points, mark it "(my suggestion)".
+- Give the target word count and how it fits the limit.
+- End with 1-2 choices to confirm and the go-ahead line.
+- If the student changes something, show the updated plan (only the changed lines) and wait again.
+- **Skip the preview** only when the student says so ("just write it", "no plan", "go straight to the draft") or has already approved a plan for this section in this conversation.
+- Small edits to the student's own text (polishing a paragraph, fixing footnotes) don't need a plan; for edits of more than ~2 paragraphs, first list the changes you intend to make in 3-5 bullets and wait for "go".
+
 **Drafting:**
 - **Style:** read `writing-style.md` before every draft or edit and follow it: clear, economical, argument-led prose that reads like a careful human author, not AI imitating sophistication.
 - Thesis language, academic register, the configured citation style (read the relevant section of `citation-styles.md`; OSCOLA → footnotes using markdown footnotes `[^1]`).
