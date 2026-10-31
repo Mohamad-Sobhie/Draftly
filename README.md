@@ -23,6 +23,7 @@ Defaults are set for a UK law student (LLM) writing on UK/EU bank regulation and
 | `.claude/settings.json` | Pre-approved permissions so the student isn't flooded with prompts. |
 | `scripts/ingest.py` | PDF / scanned PDF / .docx / web page / text → page-marked, chapter-split markdown. |
 | `scripts/build_library.py` | `references/INDEX.md` → `library.html` (offline, searchable, with a gap panel). |
+| `scripts/style_check.py` | Counts writing-style problems in a draft (stock phrases, inflated words, em dashes, restating endings, monotone rhythm). |
 | `scripts/build_discussion.py` | Discuss session (JSON) → colour-coded perspectives board (HTML) in `sessions/`. |
 | `scripts/setup.sh` | One-time setup + self-test. `scripts/selftest.py --full` runs the extended test. |
 | `references/INDEX.md` | The library map Claude maintains. |
@@ -96,7 +97,7 @@ bash scripts/setup.sh
 
 (If they use a private copy, add this template as a second remote: `git remote add template https://github.com/Mohamad-Sobhie/Draftly.git`, then `git pull template main`.) Their brief, library, notes and drafts are git-ignored, so updates never touch them. Re-running `setup.sh` is safe.
 
-To customise: edit `.claude/skills/draftly/SKILL.md` (keep it under ~500 lines), add field presets to `references/perspectives.md`, or citation rules to `references/citation-styles.md`.
+To customise: edit `.claude/skills/draftly/SKILL.md` (keep it under ~500 lines), add field presets to `references/perspectives.md`, citation rules to `references/citation-styles.md`, or change the house style in `references/writing-style.md`.
 
 ### Script reference (for you, not the student)
 
@@ -130,7 +131,7 @@ Open the **Claude** app, go to **Code**, and open your **draftly** thesis folder
    - ⚔️ *"Map where they fight"*: direct contradictions, the strongest and weakest evidence, what they all agree on, and what nobody addressed.
    - 📋 *"Write the briefing"*: a one-paragraph summary for your supervisor, five key findings ranked by reliability, one hidden connection, and one thing to change in your thesis.
    - 🔍 *"Grade your work"*: a 1–10 confidence score per finding, the weakest claim and how to fix it, and a bias check showing which perspective dominated.
-3. ✍️ **Write**: turns **your** points into a draft, or polishes your own text. *"Here are my points for 3.2, draft it."* Every draft is saved as a new version, so nothing is lost.
+3. ✍️ **Write**: turns **your** points into a draft, or polishes your own text. *"Here are my points for 3.2, draft it."* Every draft is saved as a new version, so nothing is lost. Drafts are written plainly and precisely, without AI-sounding filler, and each one ends with a short style check.
 4. 📚 **Library**: your sources. *"What do my sources say about liquidity mismatch?"*
 5. 📋 **Status**: where you are, what's missing, what to do next. *"Where am I?"*
 

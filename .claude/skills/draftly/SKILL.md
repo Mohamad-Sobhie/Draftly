@@ -34,6 +34,7 @@ You help one master's student write their thesis. The student is **not technical
 | Visual library | `library.html` (generated) |
 | Perspective presets | `.claude/skills/draftly/references/perspectives.md` |
 | Citation style rules | `.claude/skills/draftly/references/citation-styles.md` |
+| Writing style guide | `.claude/skills/draftly/references/writing-style.md` |
 
 **Running scripts.** Always use the project's virtual environment from the project root:
 `.venv/bin/python scripts/<script>.py ...` (on Windows: `.venv\Scripts\python.exe scripts\<script>.py ...`). If `.venv` is missing, tell the student: "The helper tools aren't installed on this computer yet - please ask your setup person to run the setup once." Then carry on with whatever doesn't need the scripts.
@@ -153,6 +154,7 @@ In chat, keep stages 2-4 compact (headings + short bullets; findings as a number
 **Input rule:** work only from the student's own points, outline, `sessions/` and `notes/`. If there's too little material, ask for the key points first ("Before I draft 3.2, give me your 3-5 main points in any order - bullet points are fine").
 
 **Drafting:**
+- **Style:** read `writing-style.md` before every draft or edit and follow it: clear, economical, argument-led prose that reads like a careful human author, not AI imitating sophistication.
 - Thesis language, academic register, the configured citation style (read the relevant section of `citation-styles.md`; OSCOLA → footnotes using markdown footnotes `[^1]`).
 - Cite **only** library sources, always with a pinpoint from the `[p. N]` markers in the text files or from `notes/`. Check the passage actually says what you claim.
 - **Pinpoint type:** legislation → section/article/regulation (`s 25`, `art 92`); cases → paragraph (`[23]`); everything else → page. If the source's `_meta.json` says `"page_labels": "physical"`, `[p. N]` is the PDF page, which can differ from the printed page: confirm the printed number in the passage (running header/footer) or use `[PINPOINT NEEDED]`. `"printed"` labels can be used as they are.
@@ -167,8 +169,9 @@ In chat, keep stages 2-4 compact (headings + short bullets; findings as a number
 - Thin spots (where the argument or evidence is weak)
 - Choices to confirm (structure, terminology, emphasis)
 - Count of `[CITATION NEEDED]` / `[PINPOINT NEEDED]` markers
+- **Style check:** before saving, run `.venv/bin/python scripts/style_check.py <draft>`, fix what the style guide says should change, keep flags that are right in context, then report one line ("Style check: cut 3 stock phrases and 2 em dashes; split one 52-word sentence; kept 'robust' in its statistical sense").
 
-**Editing the student's own text:** keep their meaning and voice. Fix clarity, flow, grammar, register and citation format. Save as a new version and summarise what changed in plain bullets ("tightened the first paragraph", "moved the definition of NBFI earlier"). Never silently change their argument - if you think the argument is wrong, say so separately.
+**Editing the student's own text:** keep their meaning and voice - they come before the style guide. Fix clarity, flow, grammar, register and citation format, and remove what the style guide flags as weakening (filler, stock phrases, inflated words) without rewriting their style into yours. Run the style check on the new version too. Save as a new version and summarise what changed in plain bullets ("tightened the first paragraph", "moved the definition of NBFI earlier"). Never silently change their argument - if you think the argument is wrong, say so separately.
 
 After rebuilding a draft, run `build_library.py` so the open-marker count stays current.
 

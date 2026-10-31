@@ -241,6 +241,18 @@ def quick(tmp: Path, results: list) -> None:
           "fight map, briefing and peer review rendered", results)
     check(d.get("downgraded") == ["Unsourced finding"], "unsourced 'high' finding downgraded to medium", results)
     check(d.get("dominant_perspective") == "practitioner", "bias check flags the dominant perspective", results)
+    padded = root / "drafts" / "style-bad.md"
+    padded.write_text("## 3.1\n\nIn today's rapidly evolving landscape, it is important to note that funds play a "
+                      "pivotal role. Moreover, regulators must navigate this. Furthermore, it is unprecedented.[^1]\n\n"
+                      "[^1]: Act 2000, s 19: see art 4; para 2; ch 3.\n", encoding="utf-8")
+    plain = root / "drafts" / "style-good.md"
+    plain.write_text("## 3.1\n\nMost supervisory data on non-bank lenders reaches the regulator through the banks that "
+                     "fund them. Bank returns show exposures to funds and committed credit lines. A fund that borrows "
+                     "from several banks appears in several returns, but nowhere as a whole.\n", encoding="utf-8")
+    sb, sg = run("style_check.py", str(padded)), run("style_check.py", str(plain))
+    check(sb.get("ok") and sb.get("issues", 0) >= 6 and sb.get("verdict") == "needs work", "style check flags padded prose", results)
+    check(sg.get("ok") and sg.get("issues") == 0, "style check passes plain prose", results)
+    check("colon_semicolon_heavy_paragraphs" not in sb.get("counts", {}), "footnotes ignored by the style check", results)
     check("http://" not in html.replace("http://www.w3.org", "") and "https://" not in html and "<link" not in html,
           "library.html is self-contained (no external resources)", results)
 
