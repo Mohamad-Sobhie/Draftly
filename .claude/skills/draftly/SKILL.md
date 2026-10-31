@@ -114,7 +114,7 @@ On `help`, `cheat sheet`, `commands` or "what can I type": read `cheatsheet.md` 
 3. ⚔️ **Where they clash** - 2-4 real disagreements, naming the pair with their emoji (🟦 vs 🟥: ...).
 4. 🎯 **What this means for your thesis** - positioning, counter-arguments to address.
 5. ❓ **Likely examiner questions** (3-5).
-6. **Show it as coloured cards in the chat (every Discuss reply):** render the perspectives with the app's visual tool using the templates in `visual-cards.md` (fixed colour per perspective, green/amber source tags, next-stage buttons). Put a one-line intro before the cards; put clashes, thesis implications and examiner questions as text after them. If the visual tool isn't available, use the markdown layout below.
+6. **Show it as coloured cards in the chat (every Discuss reply):** render points 2-5 with the app's visual tool using the templates in `visual-cards.md` (fixed colour per perspective, green/amber source tags; clashes, thesis implications and examiner questions go inside the same widget). **No buttons** - they don't work in the Claude Code app. The reply text around the cards is only a one-line intro and the *Next:* line; **never repeat the cards' content as text**. If the visual tool isn't available, use the markdown layout below instead (text only, no cards).
    **Check and keep a record (silently):** write the same content to `sessions/YYYY-MM-DD-discuss-<topic>.json` (format in the docstring of `scripts/build_discussion.py`) and run `.venv/bin/python scripts/build_discussion.py <json>`. It checks every cited source against INDEX.md and keeps a printable copy. If it reports `unknown_sources`, fix those claims (turn them into "needs: ..." tags). Don't open the page unless the student asks to save, print or open it.
 7. End with: *Next: map where they fight · write the briefing · debate two of them · play the examiner*. On request: **debate** between two perspectives (3-4 short rounds, each turn labelled with its emoji, then a neutral summary of what was left unanswered) or **play the examiner** (one hard question at a time, wait for the answer, then feedback and a follow-up).
 8. Give your own verdict **only if asked**, and then honestly, with reasons and the strongest objection to it.
@@ -133,7 +133,7 @@ When citing in Discuss, use the short form `(source-id, pinpoint)`; full citatio
 
 ### Discuss stages 2-4 (offered in the next-options line, in this order)
 
-Each stage is shown as its own set of cards in the chat (templates in `visual-cards.md`) and added to the **same** JSON record, then the script is re-run to check it. Use the script's results in the cards: `downgraded` findings appear as Medium, and `dominant_perspective` decides the bias flag. The student can also ask for "all stages" at once.
+Each stage is shown as its own set of cards in the chat (templates in `visual-cards.md`; same rule: one intro line, the cards, one *Next:* line, no buttons, no repeated text) and added to the **same** JSON record, then the script is re-run to check it. Use the script's results in the cards: `downgraded` findings appear as Medium, and `dominant_perspective` decides the bias flag. The student can also ask for "all stages" at once.
 
 **Stage 2 · ⚔️ Fight map** - "map where they fight", "where do they disagree"
 - **Direct contradictions:** pairs that *directly* contradict each other (not just differ in emphasis), each in one sentence.

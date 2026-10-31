@@ -6,7 +6,7 @@ Discuss output is shown **inside the chat** as coloured cards, using the Claude 
 
 - **Once per session, before the first card,** call the visual tool's `read_me` (module `mockup`) silently. Never mention it.
 - One `show_widget` call per stage. Give it a specific `title` (e.g. `discuss_nbfi_perspectives`, `discuss_nbfi_fight_map`).
-- The tool's own rules apply: no emoji inside the widget, sentence case, font weights 400/500 only, colours only through CSS variables (they adapt to dark mode), no headings or explanatory prose inside the widget. Short intro text and the stage's prose sections go in the normal reply, outside the widget.
+- The tool's own rules apply: no emoji inside the widget, sentence case, font weights 400/500 only, colours only through CSS variables (they adapt to dark mode), no big headings inside the widget (use the small `.pl` labels).
 - Keep the fixed colour per perspective (the chat emoji in the text match):
 
 | Perspective | Accent `--a` | Tint `--t` | Icon | Chat emoji |
@@ -19,7 +19,11 @@ Discuss output is shown **inside the chat** as coloured cards, using the Claude 
 | extra (schools of thought) | `aqua`, `magenta`, `orange` tints in that order | | `ti-scale`, `ti-building-bank`, `ti-flag` | ◻️ |
 
 - Source tags: library-backed → class `ok` (`var(--bg-success)` / `var(--text-success)`), text `source-id, pinpoint`. Gap → class `nd` (`var(--bg-warning)` / `var(--text-warning)`), text `needs: kind of source` or `not in your library yet`. Only sources that are in INDEX.md may get an `ok` tag.
-- End each widget with 2-3 buttons that call `sendPrompt(...)` for the next stage (label ends with ↗).
+- **No buttons.** Clickable buttons (`sendPrompt`) don't work in the Claude Code app, so never add any. Next steps go in the reply's *Next:* line instead.
+- **Everything goes in the cards; nothing is repeated in text.** The reply around a widget is exactly:
+  1. one short intro line before it (e.g. "Here's your question through the five perspectives:"), and
+  2. one *Next:* line after it (e.g. *Next: map where they fight · write the briefing · play the examiner*).
+  Never restate, summarise or list the cards' content in text - the student sees it once, in the cards. (The tool itself warns against duplicating what it shows.)
 - **If the visual tool isn't available** (e.g. the terminal version of Claude Code), give the same content as markdown with the chat emoji per perspective (layout in SKILL.md) - never paste raw HTML into the reply.
 
 ## Shared style block (start every widget with this)
@@ -66,8 +70,17 @@ Discuss output is shown **inside the chat** as coloured cards, using the Claude 
   <div class="os"><div class="pl" style="margin-top:0">Only they'd say</div><p>...</p></div>
 </div>
 ```
-Buttons: Map where they fight ↗ · Write the briefing ↗ · Play the examiner ↗.
-After the widget, in the reply: ⚔️ where they clash (one line per pair, with emoji), 🎯 what this means for the thesis, ❓ likely examiner questions.
+After the five cards, in the **same** widget:
+
+```html
+<div class="bx"><div class="pl">Where they clash</div>
+  <div class="row"><div style="white-space:nowrap;padding-top:4px"><span class="dt" style="--a:var(--text-tint-blue)"></span><span class="dt" style="--a:var(--text-tint-red)"></span></div>
+    <p><span style="font-weight:500">Practitioner vs skeptic:</span> ...</p></div>
+</div>
+<div class="bx"><div class="pl">What this means for your thesis</div><p>...</p></div>
+<div class="bx"><div class="pl">Likely examiner questions</div><ol><li>...</li></ol></div>
+```
+Next line: *Next: map where they fight · write the briefing · play the examiner*.
 
 ## Stage 2 · fight map
 
@@ -85,7 +98,7 @@ After the widget, in the reply: ⚔️ where they clash (one line per pair, with
   <div class="bx"><div class="pl">What nobody addressed</div><ul><li>To check: ...</li></ul></div>
 </div>
 ```
-Buttons: Write the briefing ↗ · Debate the two strongest ↗.
+Next line: *Next: write the briefing · debate the two strongest*.
 
 ## Stage 3 · briefing
 
@@ -102,7 +115,7 @@ Buttons: Write the briefing ↗ · Debate the two strongest ↗.
 <div class="bx" style="border-left:3px solid var(--text-tint-violet);border-radius:0"><div class="pl">Hidden connection</div><p>...</p></div>
 <div class="bx" style="border-left:3px solid var(--text-success);border-radius:0;background:var(--bg-success)"><div class="pl">One thing to change in your thesis</div><p>...</p></div>
 ```
-"High" only when a library source backs the finding; otherwise Medium at most. Buttons: Grade your work ↗ · Draft the section ↗.
+"High" only when a library source backs the finding; otherwise Medium at most. Next line: *Next: grade your work · draft the section*.
 
 ## Stage 4 · peer review
 
