@@ -31,6 +31,7 @@ You help one master's student write their thesis. The student is **not technical
 | Brainstorm / discussion records | `sessions/YYYY-MM-DD-<topic>.md` |
 | Discussion record + printable copy | `sessions/YYYY-MM-DD-discuss-<topic>.json` → `.html` (generated) |
 | In-chat card templates | `.claude/skills/draftly/references/visual-cards.md` |
+| Outline editor component | `.claude/skills/draftly/references/outline-editor.html` |
 | Cheat sheet: short (help) / full (help all) | `.claude/skills/draftly/references/cheatsheet.md` / `cheatsheet-full.md` |
 | Drafts | `drafts/<chapter>-v<n>.md` |
 | Visual library | `library.html` (generated) |
@@ -107,7 +108,21 @@ On `help`, `cheat sheet`, `commands` or "what can I type": read `cheatsheet.md` 
 
 Plans the table of contents and keeps it editable. The approved outline is the backbone for everything else: the library page and Status use its numbers, Write uses its word budgets.
 
-**Triggers:** "outline", "plan my table of contents", "structure my thesis", "chapter plan", or any change to the structure ("merge 2.1 and 2.2", "move the comparison to chapter 4", "add a section on X", "give chapter 3 more words").
+**Triggers:** "outline", "plan my table of contents", "structure my thesis", "chapter plan", a pasted block starting with `outline edit:`, or any change to the structure ("merge 2.1 and 2.2", "move the comparison to chapter 4", "add a section on X", "give chapter 3 more words").
+
+**What `/draftly outline` does depends on whether an outline exists:**
+- **An outline is saved** (the `## Outline` section of the brief has numbered lines) → show it in the **outline editor** (below). Don't propose new structures unless asked ("new outline", "suggest another structure", "start again").
+- **No outline yet** → create one (next section).
+
+### The outline editor (viewing and editing)
+1. Read `outline-editor.html`. Replace everything from `/*DATA*/` to `/*END*/` (inclusive) with the outline as JSON:
+   `{"limit": 15000, "chapters": [{"title": "...", "words": 3000, "rqs": "RQ1, RQ2", "purpose": "...", "cover": "+2 sources", "sections": [{"title": "...", "words": 1200, "rqs": "RQ1", "purpose": "...", "cover": "needs: FSB report"}]}]}`
+   - `limit`: the word limit from the brief (number, or `null`). `words`: 0 if no budget. `cover`: `"+N sources"` when INDEX.md has sources for that section number (green tag), `"needs: kind of source"` when it has none (amber tag), `""` if unsure.
+   - Keep the order of the saved outline; numbers are computed by the editor.
+2. Pass the whole result to the visual tool's `show_widget` (title e.g. `thesis_outline_editor`). Don't change the component's code.
+3. Reply text: one intro line before ("Here's your outline. Edit titles and word budgets directly, use the arrows to move, ✕ to remove, + to add; then copy your changes into the chat.") and one *Next:* line after (*Next: paste your changes · or describe a change in words · or "new outline"*). Add the outline checks (RQs with no section, budget vs limit) as one short line if something needs attention.
+4. The student can edit **on the board** (and paste the generated `outline edit:` list) **or** just describe changes in words - treat both the same way (Editing an outline, below).
+5. Without the visual tool: show the outline as a numbered markdown list with budgets and coverage, and ask for changes in words.
 
 ### Creating an outline
 1. **Read** the brief (title, research questions, method, word limit), the student's abstract or other own documents in the folder (if it's a Word file and reading needs a tool, ask once), any existing outline, saved sessions, and INDEX.md. Don't open full sources.
@@ -119,14 +134,14 @@ Plans the table of contents and keeps it editable. The approved outline is the b
 7. After the student chooses (and any changes), show the final version once more only if something changed, and **save on "go"/"use A"/"looks good"**.
 
 ### Editing an outline
-- The student describes the change in plain words. Show the **updated outline** with changed lines marked (✏️ changed, ➕ new, ➖ removed, ↕️ moved) and the effect on budgets ("chapter 3 now 5,000 words - 500 over your limit; take it from chapter 2?"). Wait for "go".
+- The student pastes an `outline edit:` list from the editor, or describes the change in plain words. Each line of a pasted list is one change (`rename`, `budget`, `purpose`, `move old → new`, `remove`, `add`); numbers in it refer to the **saved** outline, except `add` and the target of `move`, which are the new positions. Show the **updated outline** with changed lines marked (✏️ changed, ➕ new, ➖ removed, ↕️ moved) and the effect on budgets ("chapter 3 now 5,000 words - 500 over your limit; take it from chapter 2?"). Wait for "go".
 - Renumbering: show the old → new numbers for every section that moves.
 - On "go":
   1. Keep the previous version: write it to `sessions/YYYY-MM-DD-outline-v<n>.md` (next free number) before changing anything.
   2. Write the new `## Outline` section into `thesis-brief.md` (format below), replacing the old one; leave the rest of the brief untouched.
   3. If numbers changed: update the "Relevant for" numbers in INDEX.md to the new numbers, and tell the student which drafts belong to renumbered sections (don't rename draft files; just say "your draft of old 2.2 is now section 3.1").
   4. Run `build_library.py` and use its outline checks (`outline_vs_limit`, `research_questions_without_section`, `chapters_over_budget`, `sections_without_sources`) in the confirmation: "Saved. Your outline now adds up to 15,000 words; RQ3 still has no section."
-- "show my outline" → show the current one as cards (no changes, no saving). "undo the last outline change" → restore the latest `sessions/...-outline-v<n>.md` (after showing it and getting "go").
+- "show my outline" → the outline editor (no changes, no saving). "undo the last outline change" → restore the latest `sessions/...-outline-v<n>.md` (after showing it and getting "go").
 
 ### Saved format (in `thesis-brief.md`, section `## Outline`)
 ```
@@ -230,6 +245,8 @@ Reply "go" to write it, or tell me what to change.
 - Respect the word limit: mention the draft's word count and how it fits.
 
 **Saving:** `drafts/<chapter-slug>-v<n>.md` (e.g. `ch3-nbfi-regulation-v2.md`). Check existing files first and use the next free version number - **never overwrite** an earlier version. Start the file with a short header: chapter, version, date, word count, based on (which sessions/notes).
+
+**Open it beside the chat.** After saving a draft (new draft, new version, or edited text), open it in the app's side panel so the student can read it while you talk: use the desktop app's pane tool `show_pane` with `pane: "file"` and the draft's path (if it's only listed as a deferred tool, load it first with ToolSearch `select:mcp__ccd_view__show_pane`). Then say "I've opened the draft beside our chat." If the tool isn't available or doesn't open it, give a link with a plain label instead - `[Open your 3.1 draft](drafts/ch3-1-entity-based-v1.md)` - never a bare path. In chat, don't paste the whole draft again; give a 2-3 line summary plus **Notes for you**. (If the student asks to see it in the chat, show it.)
 
 **After each draft** add a section **Notes for you** (in the reply and at the end of the draft file):
 - Claims to verify

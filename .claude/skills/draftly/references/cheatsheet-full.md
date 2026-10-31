@@ -17,7 +17,7 @@ Type any of these, with or without `/draftly` in front. Plain sentences work too
 | `outline` | `/draftly outline`: two structures from your abstract, with word budgets and sources per section |
 | `use A` / `use B` | saves your choice |
 | `outline: [change]` | `/draftly outline: merge 2.1 and 2.2` · `add a section on Archegos to chapter 2` · `rename 3.2` |
-| `show my outline` | the current outline as cards |
+| `outline` / `show my outline` | your saved outline as an editable board: change titles and budgets, move, add, remove, then **Copy changes** and paste them into the chat |
 | `undo the last outline change` | brings back the previous version |
 
 Nothing is saved until you say **go**, and every earlier version is kept.

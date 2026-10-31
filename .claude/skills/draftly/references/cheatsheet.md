@@ -3,9 +3,10 @@
 ### 🗂️ Plan your table of contents
 | Type | You get |
 |---|---|
-| `/draftly outline` | two possible structures from your abstract, with word budgets |
+| `/draftly outline` | first time: two possible structures from your abstract · later: your outline as an editable board |
 | `use A` (or `use B`) | saves that structure as your outline |
-| `/draftly outline: [change]` | e.g. `merge 2.1 and 2.2` · `move the UK/EU comparison to chapter 4` · `give chapter 3 500 more words` |
+| edit on the board, then **Copy changes** and paste | your edits, shown for checking, saved on **go** |
+| `/draftly outline: [change]` | or just say it: `merge 2.1 and 2.2` · `give chapter 3 500 more words` |
 
 ### ⚖️ Discuss your question (the five perspectives)
 🟦 Practitioner · 🟥 Skeptic · 🟩 Economist · 🟨 Historian · 🟪 Academic
@@ -22,7 +23,7 @@ Example: `/draftly discuss whether the PRA should regulate LDI funds directly`
 ### ✍️ Write
 | Type | You get |
 |---|---|
-| `/draftly draft [section]: [your points]` | first a plan to check, then (after you say **go**) the draft with footnotes |
+| `/draftly draft [section]: [your points]` | first a plan to check, then (after you say **go**) the draft, opened beside the chat |
 | `/draftly polish this, keep my voice: [text]` | your own text, cleaned up |
 
 Example: `/draftly draft 3.1: banks only see their own exposure; 2022 showed the gap; my view is…`

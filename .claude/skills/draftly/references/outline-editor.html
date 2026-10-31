@@ -1,0 +1,155 @@
+<h2 class="sr-only">Editable thesis outline: chapters and sections with word budgets; changes are listed at the bottom to copy into the chat.</h2>
+<style>
+.oe{padding:.5rem 0;font-size:14px}
+.oe .ch{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;padding:10px 14px 8px;margin:0 0 10px}
+.oe .r{display:flex;align-items:center;gap:6px;padding:4px 0}
+.oe .sec{border-top:0.5px solid var(--border);padding-left:6px}
+.oe .n{width:30px;font-size:13px;color:var(--text-secondary);flex:none}
+.oe .ch>.r .n{width:24px;height:24px;border-radius:7px;background:var(--surface-1);color:var(--text-primary);display:flex;align-items:center;justify-content:center;font-weight:500;margin-right:6px}
+.oe input{font:inherit;background:transparent;border:0.5px solid transparent;border-radius:6px;padding:3px 6px;color:var(--text-primary);height:auto}
+.oe input:hover{border-color:var(--border)}
+.oe input:focus{border-color:var(--border-strong);outline:none;background:var(--surface-1)}
+.oe .t{flex:1;min-width:0}
+.oe .ch>.r .t{font-weight:500;font-size:15px}
+.oe .w{width:74px;text-align:right}
+.oe .u{font-size:12px;color:var(--text-secondary);margin-right:2px}
+.oe .p{width:100%;font-size:12px;color:var(--text-secondary);margin:0 0 2px 36px}
+.oe .meta{font-size:12px;color:var(--text-secondary);white-space:nowrap}
+.oe .tg{display:inline-block;font-size:11px;padding:0 7px;border-radius:6px;margin-left:4px;white-space:nowrap}
+.oe .ok{background:var(--bg-success);color:var(--text-success)}
+.oe .nd{background:var(--bg-warning);color:var(--text-warning)}
+.oe .ib{border:none;background:transparent;color:var(--text-muted);padding:2px 4px;cursor:pointer;font-size:15px;line-height:1}
+.oe .ib:hover{color:var(--text-primary)}
+.oe .gone .t,.oe .gone .p{text-decoration:line-through;color:var(--text-muted)}
+.oe .chg{background:var(--bg-warning);color:var(--text-warning)}
+.oe .new{background:var(--bg-success);color:var(--text-success)}
+.oe .add{font-size:12px;margin:6px 0 2px 36px;padding:2px 8px}
+.oe .bar{display:flex;height:10px;border-radius:5px;overflow:hidden;gap:2px;margin:8px 0}
+.oe .box{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;padding:12px 16px;margin:0 0 10px}
+.oe .lab{font-size:11px;letter-spacing:.04em;color:var(--text-secondary);font-weight:500;margin-bottom:4px}
+.oe textarea{width:100%;min-height:60px;font:13px/1.5 var(--font-mono);border:0.5px solid var(--border);border-radius:8px;padding:8px;background:var(--surface-1);color:var(--text-primary);resize:vertical;box-sizing:border-box}
+</style>
+<div class="oe" id="oe">
+  <div id="oe-chapters"></div>
+  <button class="add" data-act="addch"><i class="ti ti-plus" aria-hidden="true"></i> Add chapter</button>
+  <div class="box" style="margin-top:12px"><div class="lab" id="oe-total">Word budget</div><div class="bar" id="oe-bar"></div><div class="meta" id="oe-legend"></div></div>
+  <div class="box"><div class="lab">Your changes · copy this into the chat</div>
+    <textarea id="oe-out" readonly></textarea>
+    <div style="display:flex;gap:8px;align-items:center;margin-top:8px">
+      <button data-act="copy"><i class="ti ti-copy" aria-hidden="true"></i> Copy changes</button>
+      <button data-act="reset"><i class="ti ti-refresh" aria-hidden="true"></i> Start over</button>
+      <span class="meta" id="oe-msg"></span>
+    </div>
+  </div>
+</div>
+<script>
+const OUTLINE = /*DATA*/{"limit":15000,"chapters":[{"title":"Introduction","words":1500,"rqs":"RQ1","purpose":"","cover":"","sections":[]}]}/*END*/;
+(function(){
+  let uid = 0;
+  const orig = new Map();
+  const mk = (o, isCh, parentId) => {
+    const it = {id: ++uid, title: o.title || "", words: o.words || 0, rqs: o.rqs || "", purpose: o.purpose || "",
+      cover: o.cover || "", gone: false, isNew: false, parent: parentId};
+    orig.set(it.id, {title: it.title, words: it.words, purpose: it.purpose, parent: parentId});
+    if (isCh) it.sections = (o.sections || []).map(s => mk(s, false, it.id));
+    return it;
+  };
+  const start = () => { uid = 0; orig.clear(); return (OUTLINE.chapters || []).map(c => mk(c, true, null)); };
+  let chs = start();
+  const origNum = new Map();
+  const number = () => {
+    const m = new Map(); let ci = 0;
+    chs.forEach(c => { if (c.gone) return; ci++; m.set(c.id, String(ci)); let si = 0;
+      c.sections.forEach(s => { if (s.gone) return; si++; m.set(s.id, ci + "." + si); }); });
+    return m;
+  };
+  number().forEach((v, k) => origNum.set(k, v));
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+  const fmt = n => Number(n || 0).toLocaleString("en-GB");
+  const cover = c => !c ? "" : (c.startsWith("+") ? '<span class="tg ok">' + esc(c.slice(1)) + '</span>' : '<span class="tg nd">' + esc(c) + '</span>');
+  const tag = it => it.isNew ? '<span class="tg new">new</span>' : (changed(it) ? '<span class="tg chg">changed</span>' : "");
+  const changed = it => { const o = orig.get(it.id); return o && !it.gone && (o.title !== it.title || +o.words !== +it.words || o.purpose !== it.purpose || o.parent !== it.parent); };
+  const row = (it, num, isCh) => '<div class="r' + (isCh ? "" : " sec") + (it.gone ? " gone" : "") + '" data-id="' + it.id + '">' +
+    '<div class="n">' + (it.gone ? "" : num) + '</div>' +
+    '<input class="t" data-f="title" value="' + esc(it.title) + '" aria-label="Title"' + (it.gone ? " disabled" : "") + '>' +
+    tag(it) + (it.rqs ? '<span class="meta">' + esc(it.rqs) + '</span>' : "") + cover(it.cover) +
+    '<input class="w" type="number" step="100" min="0" data-f="words" value="' + (it.words || "") + '" aria-label="Word budget"' + (it.gone ? " disabled" : "") + '><span class="u">w</span>' +
+    '<button class="ib" data-act="up" aria-label="Move up"><i class="ti ti-arrow-up"></i></button>' +
+    '<button class="ib" data-act="down" aria-label="Move down"><i class="ti ti-arrow-down"></i></button>' +
+    '<button class="ib" data-act="del" aria-label="' + (it.gone ? "Restore" : "Remove") + '"><i class="ti ' + (it.gone ? "ti-arrow-back-up" : "ti-x") + '"></i></button>' +
+    '</div>' + '<input class="p" data-f="purpose" placeholder="purpose (optional)" value="' + esc(it.purpose) + '" data-id="' + it.id + '"' + (it.gone ? " disabled" : "") + '>';
+  const find = id => { for (const c of chs) { if (c.id === id) return {it: c, list: chs}; const s = c.sections.find(x => x.id === id); if (s) return {it: s, list: c.sections, ch: c}; } return null; };
+  function changes() {
+    const num = number(), out = [];
+    chs.forEach(c => [c, ...c.sections].forEach(it => {
+      const o = orig.get(it.id), was = origNum.get(it.id), now = num.get(it.id);
+      if (it.isNew && !it.gone) { out.push("add " + now + ' "' + it.title + '"' + (it.words ? " · " + fmt(it.words) + " words" : "") + (it.purpose ? " · " + it.purpose : "")); return; }
+      if (!o) return;
+      if (it.gone) { out.push("remove " + was + ' "' + o.title + '"'); return; }
+      if (o.title !== it.title) out.push("rename " + was + ' "' + o.title + '" to "' + it.title + '"');
+      if (+o.words !== +it.words) out.push("budget " + was + ": " + fmt(o.words) + " → " + fmt(it.words) + " words");
+      if (o.purpose !== it.purpose) out.push("purpose " + was + ': "' + it.purpose + '"');
+      if (was !== now) out.push("move " + was + " → " + now);
+    }));
+    return out.length ? "outline edit:\n- " + out.join("\n- ") : "";
+  }
+  function render() {
+    const num = number();
+    document.getElementById("oe-chapters").innerHTML = chs.map(c =>
+      '<div class="ch">' + row(c, num.get(c.id), true) + c.sections.map(s => row(s, num.get(s.id), false)).join("") +
+      (c.gone ? "" : '<button class="add" data-act="addsec" data-id="' + c.id + '"><i class="ti ti-plus" aria-hidden="true"></i> Add section</button>') + '</div>').join("");
+    summary();
+  }
+  function summary() {
+    const live = chs.filter(c => !c.gone), total = live.reduce((a, c) => a + (+c.words || 0), 0), lim = OUTLINE.limit;
+    document.getElementById("oe-total").textContent = "Word budget · " + fmt(total) + (lim ? " of " + fmt(lim) + (total > lim ? " · " + fmt(total - lim) + " over" : total < lim ? " · " + fmt(lim - total) + " left" : "") : "");
+    document.getElementById("oe-bar").innerHTML = live.map((c, i) => '<div style="flex:' + Math.max(1, +c.words || 0) + ';background:' + (i % 2 ? "var(--text-secondary)" : "var(--border-strong)") + '"></div>').join("");
+    const num = number();
+    document.getElementById("oe-legend").textContent = live.map(c => num.get(c.id) + " " + c.title.split(" ").slice(0, 2).join(" ") + " " + fmt(c.words)).join(" · ");
+    const txt = changes();
+    const ta = document.getElementById("oe-out");
+    ta.value = txt || "No changes yet. Edit titles or word budgets, move, add or remove sections above.";
+    ta.rows = Math.max(3, ta.value.split("\n").length + 1);
+    chs.forEach(c => [c, ...c.sections].forEach(it => {
+      const r = document.querySelector('.r[data-id="' + it.id + '"]'); if (!r) return;
+      const old = r.querySelector(".tg.chg,.tg.new"), want = tag(it);
+      if (old && !want) old.remove();
+      if (!old && want) r.querySelector(".t").insertAdjacentHTML("afterend", want);
+    }));
+  }
+  const root = document.getElementById("oe");
+  root.addEventListener("input", e => {
+    const f = e.target.dataset.f; if (!f) return;
+    const id = +(e.target.dataset.id || e.target.closest(".r").dataset.id), hit = find(id); if (!hit) return;
+    hit.it[f] = f === "words" ? (+e.target.value || 0) : e.target.value;
+    summary();
+  });
+  root.addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    const act = b.dataset.act, msg = document.getElementById("oe-msg");
+    if (act === "copy") {
+      const ta = document.getElementById("oe-out"), txt = changes();
+      if (!txt) { msg.textContent = "Nothing to copy yet."; return; }
+      const done = () => { msg.textContent = "Copied. Paste it into the chat."; };
+      const fallback = () => { ta.focus(); ta.select(); msg.textContent = "Selected. Press Cmd+C (Ctrl+C), then paste it into the chat."; };
+      let settled = false;
+      const once = f => () => { if (!settled) { settled = true; f(); } };
+      setTimeout(once(fallback), 800);
+      try { navigator.clipboard.writeText(txt).then(once(done), once(fallback)); } catch (err) { once(fallback)(); }
+      return;
+    }
+    if (act === "reset") { chs = start(); render(); msg.textContent = ""; return; }
+    if (act === "addch") { const c = {id: ++uid, title: "New chapter", words: 0, rqs: "", purpose: "", cover: "", gone: false, isNew: true, parent: null, sections: []}; chs.push(c); render(); return; }
+    if (act === "addsec") { const c = find(+b.dataset.id).it; c.sections.push({id: ++uid, title: "New section", words: 0, rqs: "", purpose: "", cover: "", gone: false, isNew: true, parent: c.id}); render(); return; }
+    const r = b.closest(".r"); if (!r) return;
+    const hit = find(+r.dataset.id), i = hit.list.indexOf(hit.it);
+    if (act === "del") { if (hit.it.isNew) hit.list.splice(i, 1); else hit.it.gone = !hit.it.gone; }
+    if (act === "up" && i > 0) { hit.list.splice(i, 1); hit.list.splice(i - 1, 0, hit.it); }
+    else if (act === "up" && hit.ch) { const ci = chs.indexOf(hit.ch); if (ci > 0) { hit.list.splice(i, 1); chs[ci - 1].sections.push(hit.it); hit.it.parent = chs[ci - 1].id; } }
+    if (act === "down" && i < hit.list.length - 1) { hit.list.splice(i, 1); hit.list.splice(i + 1, 0, hit.it); }
+    else if (act === "down" && hit.ch && i === hit.list.length - 1) { const ci = chs.indexOf(hit.ch); if (ci < chs.length - 1) { hit.list.splice(i, 1); chs[ci + 1].sections.unshift(hit.it); hit.it.parent = chs[ci + 1].id; } }
+    render();
+  });
+  render();
+})();
+</script>
