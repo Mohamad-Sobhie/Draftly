@@ -85,5 +85,7 @@ fi
 
 echo
 bold "All set."
-echo "Next: open this folder in Claude Code and type:  menu"
-echo "      (first time: do the short setup questions together with the student)"
+if [ -z "${DRAFTLY_INSTALLER:-}" ]; then
+  echo "Next: open this folder in Claude Code and type:  menu"
+  echo "      (first time: do the short setup questions together with the student)"
+fi

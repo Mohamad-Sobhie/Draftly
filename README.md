@@ -44,13 +44,27 @@ Defaults are set for a UK law student (LLM) writing on UK/EU bank regulation and
 
 ### Install (once, on the student's machine)
 
+**Option A: one command with npx** (needs [Node.js](https://nodejs.org) 18+; no git needed)
+
+```bash
+npx github:Mohamad-Sobhie/Draftly my-thesis
+```
+
+Once the package is published to npm, this also works: `npx create-draftly my-thesis` (or `npm init draftly my-thesis`).
+
+It creates the `my-thesis` folder, copies the template in and runs the setup below. Pointing it at an **existing** folder (e.g. one that already holds the student's abstract) adds Draftly without touching any file that's already there. `--no-setup` copies the files only.
+
+**Option B: git** (makes updates a simple `git pull`)
+
 ```bash
 git clone https://github.com/Mohamad-Sobhie/Draftly.git draftly
 cd draftly
 bash scripts/setup.sh
 ```
 
-The script creates a local `.venv`, installs the Python packages, checks for poppler/tesseract (prints install hints, doesn't fail without them), creates any missing folders, and runs a self-test (it generates a tiny PDF, ingests it, builds a library page, checks the result, then cleans up). It ends with: *Open this folder in Claude Code and type menu*.
+To add Draftly to an existing folder with git: `git init -b main && git remote add origin https://github.com/Mohamad-Sobhie/Draftly.git && git pull origin main`, then `bash scripts/setup.sh`.
+
+The setup script creates a local `.venv`, installs the Python packages, checks for poppler/tesseract (prints install hints, doesn't fail without them), creates any missing folders, and runs a self-test (it generates a tiny PDF, ingests it, builds a library page, checks the result, then cleans up). It ends with: *Open this folder in Claude Code and type menu*.
 
 ### First run (do this together with the student)
 
@@ -88,7 +102,15 @@ If the student wants version history of their own work, make a **private** copy:
 
 ### Updating the skill later
 
-From the student's folder:
+**Installed with npx:** from the folder that contains the thesis folder:
+
+```bash
+npx github:Mohamad-Sobhie/Draftly@main my-thesis --update
+```
+
+It replaces only the skill, scripts, settings, `CLAUDE.md` and `README.md`, then re-runs the setup. The library, notes, sessions, drafts, thesis brief and `settings.local.json` are never touched. (Use `@main` so npx fetches the latest version rather than a cached one.)
+
+**Installed with git:** from the student's folder:
 
 ```bash
 git pull
@@ -98,6 +120,10 @@ bash scripts/setup.sh
 (If they use a private copy, add this template as a second remote: `git remote add template https://github.com/Mohamad-Sobhie/Draftly.git`, then `git pull template main`.) Their brief, library, notes and drafts are git-ignored, so updates never touch them. Re-running `setup.sh` is safe.
 
 To customise: edit `.claude/skills/draftly/SKILL.md` (keep it under ~500 lines), add field presets to `references/perspectives.md`, citation rules to `references/citation-styles.md`, or change the house style in `references/writing-style.md`.
+
+### Publishing the npx installer (optional)
+
+The repo is also the npm package `create-draftly` (`package.json` + `bin/create-draftly.js`). To publish a version: bump `version` in `package.json`, run `npm publish` (needs an npm account; `npm login` first). `npx github:...` works without publishing. npm never ships `.gitignore`, so the installer carries its own copy; the self-test checks it still matches the repo's `.gitignore`.
 
 ### Script reference (for you, not the student)
 

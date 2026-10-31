@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -307,6 +308,15 @@ def full(tmp: Path, results: list) -> None:
           "inbox file moved into the library with --store move", results)
 
 
+def installer_gitignore(results: list) -> None:
+    """The npm installer embeds .gitignore (npm won't ship it); make sure the copy hasn't drifted."""
+    js, gi = HERE.parent / "bin" / "create-draftly.js", HERE.parent / ".gitignore"
+    if not (js.exists() and gi.exists()):
+        return  # a student's folder: no installer here
+    m = re.search(r"const GITIGNORE = `(.*?)`;", js.read_text(encoding="utf-8"), flags=re.S)
+    check(bool(m) and m.group(1) == gi.read_text(encoding="utf-8"), "installer's .gitignore matches the repo's", results)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--full", action="store_true")
@@ -321,6 +331,7 @@ def main() -> int:
     try:
         print("Draftly self-test")
         quick(tmp, results)
+        installer_gitignore(results)
         if args.full:
             full(tmp, results)
     except Exception as e:  # noqa: BLE001

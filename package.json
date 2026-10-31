@@ -1,0 +1,36 @@
+{
+  "name": "create-draftly",
+  "version": "0.1.0",
+  "description": "Create a Draftly thesis folder: a Claude Code project that turns Claude into a thesis assistant.",
+  "license": "MIT",
+  "author": "Mohamad Sobhie",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mohamad-Sobhie/Draftly.git"
+  },
+  "homepage": "https://github.com/Mohamad-Sobhie/Draftly#readme",
+  "keywords": ["claude", "claude-code", "skill", "thesis", "dissertation", "oscola", "academic-writing"],
+  "bin": {
+    "create-draftly": "bin/create-draftly.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "bin/",
+    ".claude/settings.json",
+    ".claude/skills/",
+    "scripts/*.py",
+    "scripts/*.sh",
+    "scripts/requirements.txt",
+    "references/INDEX.md",
+    "references/inbox/.gitkeep",
+    "references/pdf/.gitkeep",
+    "references/text/.gitkeep",
+    "notes/.gitkeep",
+    "sessions/.gitkeep",
+    "drafts/.gitkeep",
+    "CLAUDE.md",
+    "README.md"
+  ]
+}
