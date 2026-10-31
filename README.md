@@ -6,6 +6,10 @@ The student never runs commands or edits files. They open the folder in Claude C
 
 Defaults are set for a UK law student (LLM) writing on UK/EU bank regulation and systemic risk from non-bank financial intermediaries (NBFIs), with OSCOLA citations. Everything is configurable for any field during the first-run setup.
 
+[![Draftly intro video (21 s)](media/draftly-intro.jpg)](media/draftly-intro.mp4)
+
+*Click the image to watch the 21-second intro.*
+
 - [Part 1: Setup guide (for the setup person)](#part-1-setup-guide-for-the-setup-person)
 - [Part 2: Student guide (one page)](#part-2-student-guide)
 
