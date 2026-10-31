@@ -105,10 +105,10 @@ If the student wants version history of their own work, make a **private** copy:
 **Installed with npx:** from the folder that contains the thesis folder:
 
 ```bash
-npx github:Mohamad-Sobhie/Draftly@main my-thesis --update
+npx "github:Mohamad-Sobhie/Draftly#main" my-thesis --update
 ```
 
-It replaces only the skill, scripts, settings, `CLAUDE.md` and `README.md`, then re-runs the setup. The library, notes, sessions, drafts, thesis brief and `settings.local.json` are never touched. (Use `@main` so npx fetches the latest version rather than a cached one.)
+It replaces only the skill, scripts, settings, `CLAUDE.md` and `README.md`, then re-runs the setup. The library, notes, sessions, drafts, thesis brief and `settings.local.json` are never touched. (The `#main` makes npx fetch the latest version rather than a cached one; keep the quotes, since some shells treat `#` as a comment.)
 
 **Installed with git:** from the student's folder:
 
