@@ -1,155 +1,216 @@
-<h2 class="sr-only">Editable thesis outline: chapters and sections with word budgets; changes are listed at the bottom to copy into the chat.</h2>
+<h2 class="sr-only">Editable thesis outline: chapters and sections with word budgets; your changes are listed at the bottom to copy into the chat.</h2>
 <style>
-.oe{padding:.5rem 0;font-size:14px}
-.oe .ch{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;padding:10px 14px 8px;margin:0 0 10px}
-.oe .r{display:flex;align-items:center;gap:6px;padding:4px 0}
-.oe .sec{border-top:0.5px solid var(--border);padding-left:6px}
-.oe .n{width:30px;font-size:13px;color:var(--text-secondary);flex:none}
-.oe .ch>.r .n{width:24px;height:24px;border-radius:7px;background:var(--surface-1);color:var(--text-primary);display:flex;align-items:center;justify-content:center;font-weight:500;margin-right:6px}
-.oe input{font:inherit;background:transparent;border:0.5px solid transparent;border-radius:6px;padding:3px 6px;color:var(--text-primary);height:auto}
-.oe input:hover{border-color:var(--border)}
-.oe input:focus{border-color:var(--border-strong);outline:none;background:var(--surface-1)}
-.oe .t{flex:1;min-width:0}
-.oe .ch>.r .t{font-weight:500;font-size:15px}
-.oe .w{width:74px;text-align:right}
-.oe .u{font-size:12px;color:var(--text-secondary);margin-right:2px}
-.oe .p{width:100%;font-size:12px;color:var(--text-secondary);margin:0 0 2px 36px}
-.oe .meta{font-size:12px;color:var(--text-secondary);white-space:nowrap}
-.oe .tg{display:inline-block;font-size:11px;padding:0 7px;border-radius:6px;margin-left:4px;white-space:nowrap}
+.oe{padding:.5rem 0;font-size:14px;color:var(--text-primary)}
+.oe *{box-sizing:border-box}
+.oe .hint{font-size:12px;color:var(--text-secondary);margin:0 0 10px;display:flex;gap:14px;flex-wrap:wrap}
+.oe .hint i{font-size:14px;vertical-align:-2px;margin-right:3px}
+.oe .ch{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;margin:0 0 10px;overflow:hidden}
+.oe .r{display:flex;align-items:flex-start;gap:8px;padding:7px 10px 7px 12px;position:relative}
+.oe .r:hover,.oe .r:focus-within{background:var(--surface-1)}
+.oe .ch>.r{padding:10px 10px 10px 12px}
+.oe .sec{border-top:0.5px solid var(--border);padding-left:44px}
+.oe .n{flex:none;padding-top:3px;font-size:12px;color:var(--text-secondary);font-variant-numeric:tabular-nums;width:28px}
+.oe .ch>.r .n{padding-top:0;width:26px;height:26px;border-radius:8px;background:var(--surface-1);color:var(--text-primary);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500}
+.oe .body{flex:1;min-width:0}
+.oe input,.oe [contenteditable]{font:inherit;color:inherit;background:transparent;border:0.5px solid transparent;border-radius:6px;padding:2px 6px;margin:0 -6px;height:auto;box-shadow:none;line-height:1.45}
+.oe [contenteditable="true"]:hover,.oe input:hover{border-color:var(--border)}
+.oe [contenteditable="true"]:focus,.oe input:focus{border-color:var(--border-strong);background:var(--surface-2);outline:none}
+.oe [contenteditable]:empty::before{content:attr(data-ph);color:var(--text-muted)}
+.oe .t{display:block;overflow-wrap:anywhere}
+.oe .ch>.r .t{font-size:15px;font-weight:500}
+.oe .p{display:block;font-size:12px;color:var(--text-secondary);margin-top:1px;overflow-wrap:anywhere}
+.oe .p::placeholder{color:var(--text-muted)}
+.oe .tags{display:flex;gap:4px;flex:none;align-items:center;padding-top:3px;max-width:45%;flex-wrap:wrap;justify-content:flex-end}
+.oe .tg{font-size:11px;padding:1px 7px;border-radius:6px;white-space:nowrap;line-height:1.5}
 .oe .ok{background:var(--bg-success);color:var(--text-success)}
 .oe .nd{background:var(--bg-warning);color:var(--text-warning)}
-.oe .ib{border:none;background:transparent;color:var(--text-muted);padding:2px 4px;cursor:pointer;font-size:15px;line-height:1}
-.oe .ib:hover{color:var(--text-primary)}
-.oe .gone .t,.oe .gone .p{text-decoration:line-through;color:var(--text-muted)}
-.oe .chg{background:var(--bg-warning);color:var(--text-warning)}
+.oe .chg{background:var(--bg-accent);color:var(--text-accent)}
 .oe .new{background:var(--bg-success);color:var(--text-success)}
-.oe .add{font-size:12px;margin:6px 0 2px 36px;padding:2px 8px}
-.oe .bar{display:flex;height:10px;border-radius:5px;overflow:hidden;gap:2px;margin:8px 0}
-.oe .box{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;padding:12px 16px;margin:0 0 10px}
-.oe .lab{font-size:11px;letter-spacing:.04em;color:var(--text-secondary);font-weight:500;margin-bottom:4px}
-.oe textarea{width:100%;min-height:60px;font:13px/1.5 var(--font-mono);border:0.5px solid var(--border);border-radius:8px;padding:8px;background:var(--surface-1);color:var(--text-primary);resize:vertical;box-sizing:border-box}
+.oe .rq{color:var(--text-secondary);font-size:11px;white-space:nowrap}
+.oe .wd{flex:none;display:flex;align-items:center;padding-top:1px;gap:3px;font-size:12px;color:var(--text-secondary)}
+.oe .wd input{width:62px;text-align:right;font-variant-numeric:tabular-nums;margin:0;font-size:13px;color:var(--text-primary)}
+.oe .ctl{flex:none;display:flex;gap:0;opacity:0;transition:opacity .12s}
+.oe .r:hover .ctl,.oe .r:focus-within .ctl{opacity:1}
+.oe .ib{border:none;background:transparent;color:var(--text-secondary);width:26px;height:26px;border-radius:6px;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px}
+.oe .ib:hover{background:var(--surface-2);color:var(--text-primary)}
+.oe .ib:disabled{opacity:.3;cursor:default;background:transparent}
+.oe .gone{opacity:.55}
+.oe .gone .t,.oe .gone .p{text-decoration:line-through}
+.oe .gone .ctl{opacity:1}
+.oe .sum{font-size:11px;padding:1px 7px;border-radius:6px;white-space:nowrap}
+.oe .sum.bad{background:var(--bg-warning);color:var(--text-warning)}
+.oe .addrow{border-top:0.5px solid var(--border);padding:4px 10px 4px 44px}
+.oe .link{border:none;background:transparent;color:var(--text-secondary);font-size:12px;padding:4px 6px;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+.oe .link:hover{color:var(--text-primary);background:var(--surface-1)}
+.oe .card{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;padding:12px 16px;margin:0 0 10px}
+.oe .lab{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;color:var(--text-secondary);margin-bottom:8px}
+.oe .lab b{font-weight:500;color:var(--text-primary);font-size:13px}
+.oe .bar{display:flex;height:8px;border-radius:4px;overflow:hidden;gap:2px;background:var(--surface-1)}
+.oe .bar div{min-width:2px}
+.oe .legend{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:8px;font-size:12px;color:var(--text-secondary)}
+.oe .legend span i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px;vertical-align:0}
+.oe .over{color:var(--text-warning)}
+.oe .chl{list-style:none;margin:0;padding:0}
+.oe .chl li{display:flex;gap:8px;align-items:baseline;padding:5px 0;border-bottom:0.5px solid var(--border);font-size:13px}
+.oe .chl li:last-child{border-bottom:none}
+.oe .chl .tg{flex:none;min-width:58px;text-align:center}
+.oe .del{background:var(--bg-danger);color:var(--text-danger)}
+.oe .mv{background:var(--surface-1);color:var(--text-secondary)}
+.oe .empty{font-size:13px;color:var(--text-muted);padding:4px 0}
+.oe .acts{display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap}
+.oe .primary{background:var(--text-primary);color:var(--surface-2);border:none;border-radius:var(--radius);padding:6px 12px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.oe .primary:disabled{opacity:.35;cursor:default}
+.oe .msg{font-size:12px;color:var(--text-secondary)}
+.oe .raw{position:absolute;left:-9999px;width:1px;height:1px}
 </style>
 <div class="oe" id="oe">
+  <div class="hint"><span><i class="ti ti-pencil" aria-hidden="true"></i>Click a title or word count to edit</span><span><i class="ti ti-arrows-sort" aria-hidden="true"></i>Hover a row to move, remove or add a purpose</span></div>
   <div id="oe-chapters"></div>
-  <button class="add" data-act="addch"><i class="ti ti-plus" aria-hidden="true"></i> Add chapter</button>
-  <div class="box" style="margin-top:12px"><div class="lab" id="oe-total">Word budget</div><div class="bar" id="oe-bar"></div><div class="meta" id="oe-legend"></div></div>
-  <div class="box"><div class="lab">Your changes · copy this into the chat</div>
-    <textarea id="oe-out" readonly></textarea>
-    <div style="display:flex;gap:8px;align-items:center;margin-top:8px">
-      <button data-act="copy"><i class="ti ti-copy" aria-hidden="true"></i> Copy changes</button>
-      <button data-act="reset"><i class="ti ti-refresh" aria-hidden="true"></i> Start over</button>
-      <span class="meta" id="oe-msg"></span>
+  <button class="link" data-act="addch" style="margin:0 0 12px 4px"><i class="ti ti-plus" aria-hidden="true"></i>Add chapter</button>
+  <div class="card"><div class="lab"><span>Word budget</span><b id="oe-total"></b></div><div class="bar" id="oe-bar"></div><div class="legend" id="oe-legend"></div></div>
+  <div class="card"><div class="lab"><span>Your changes</span><b id="oe-count"></b></div>
+    <ul class="chl" id="oe-list"></ul>
+    <div class="acts">
+      <button class="primary" data-act="copy" id="oe-copy"><i class="ti ti-copy" aria-hidden="true"></i>Copy changes</button>
+      <button class="link" data-act="reset"><i class="ti ti-arrow-back-up" aria-hidden="true"></i>Start over</button>
+      <span class="msg" id="oe-msg"></span>
     </div>
+    <textarea class="raw" id="oe-out" readonly aria-hidden="true" tabindex="-1"></textarea>
   </div>
 </div>
 <script>
 const OUTLINE = /*DATA*/{"limit":15000,"chapters":[{"title":"Introduction","words":1500,"rqs":"RQ1","purpose":"","cover":"","sections":[]}]}/*END*/;
 (function(){
-  let uid = 0;
-  const orig = new Map();
-  const mk = (o, isCh, parentId) => {
-    const it = {id: ++uid, title: o.title || "", words: o.words || 0, rqs: o.rqs || "", purpose: o.purpose || "",
-      cover: o.cover || "", gone: false, isNew: false, parent: parentId};
-    orig.set(it.id, {title: it.title, words: it.words, purpose: it.purpose, parent: parentId});
-    if (isCh) it.sections = (o.sections || []).map(s => mk(s, false, it.id));
+  const SEG = ["var(--text-tint-blue)","var(--text-tint-green)","var(--text-tint-violet)","var(--text-tint-yellow)","var(--text-tint-red)","var(--text-tint-aqua)","var(--text-tint-magenta)","var(--text-tint-orange)"];
+  let uid = 0; const orig = new Map(), origNum = new Map();
+  const mk = (o, parent) => {
+    const it = {id: ++uid, title: o.title || "", words: +o.words || 0, rqs: o.rqs || "", purpose: o.purpose || "",
+      cover: o.cover || "", gone: false, isNew: false, parent};
+    orig.set(it.id, {title: it.title, words: it.words, purpose: it.purpose, parent});
+    if (parent === null) it.sections = (o.sections || []).map(s => mk(s, it.id));
     return it;
   };
-  const start = () => { uid = 0; orig.clear(); return (OUTLINE.chapters || []).map(c => mk(c, true, null)); };
+  const start = () => { uid = 0; orig.clear(); return (OUTLINE.chapters || []).map(c => mk(c, null)); };
   let chs = start();
-  const origNum = new Map();
-  const number = () => {
-    const m = new Map(); let ci = 0;
+  const number = () => { const m = new Map(); let ci = 0;
     chs.forEach(c => { if (c.gone) return; ci++; m.set(c.id, String(ci)); let si = 0;
-      c.sections.forEach(s => { if (s.gone) return; si++; m.set(s.id, ci + "." + si); }); });
-    return m;
-  };
+      c.sections.forEach(s => { if (!s.gone) m.set(s.id, ci + "." + (++si)); }); });
+    return m; };
   number().forEach((v, k) => origNum.set(k, v));
+  const $ = id => document.getElementById(id);
   const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
   const fmt = n => Number(n || 0).toLocaleString("en-GB");
-  const cover = c => !c ? "" : (c.startsWith("+") ? '<span class="tg ok">' + esc(c.slice(1)) + '</span>' : '<span class="tg nd">' + esc(c) + '</span>');
-  const tag = it => it.isNew ? '<span class="tg new">new</span>' : (changed(it) ? '<span class="tg chg">changed</span>' : "");
   const changed = it => { const o = orig.get(it.id); return o && !it.gone && (o.title !== it.title || +o.words !== +it.words || o.purpose !== it.purpose || o.parent !== it.parent); };
-  const row = (it, num, isCh) => '<div class="r' + (isCh ? "" : " sec") + (it.gone ? " gone" : "") + '" data-id="' + it.id + '">' +
-    '<div class="n">' + (it.gone ? "" : num) + '</div>' +
-    '<input class="t" data-f="title" value="' + esc(it.title) + '" aria-label="Title"' + (it.gone ? " disabled" : "") + '>' +
-    tag(it) + (it.rqs ? '<span class="meta">' + esc(it.rqs) + '</span>' : "") + cover(it.cover) +
-    '<input class="w" type="number" step="100" min="0" data-f="words" value="' + (it.words || "") + '" aria-label="Word budget"' + (it.gone ? " disabled" : "") + '><span class="u">w</span>' +
-    '<button class="ib" data-act="up" aria-label="Move up"><i class="ti ti-arrow-up"></i></button>' +
-    '<button class="ib" data-act="down" aria-label="Move down"><i class="ti ti-arrow-down"></i></button>' +
-    '<button class="ib" data-act="del" aria-label="' + (it.gone ? "Restore" : "Remove") + '"><i class="ti ' + (it.gone ? "ti-arrow-back-up" : "ti-x") + '"></i></button>' +
-    '</div>' + '<input class="p" data-f="purpose" placeholder="purpose (optional)" value="' + esc(it.purpose) + '" data-id="' + it.id + '"' + (it.gone ? " disabled" : "") + '>';
-  const find = id => { for (const c of chs) { if (c.id === id) return {it: c, list: chs}; const s = c.sections.find(x => x.id === id); if (s) return {it: s, list: c.sections, ch: c}; } return null; };
+  const state = it => it.isNew ? '<span class="tg new">new</span>' : changed(it) ? '<span class="tg chg">edited</span>' : "";
+  const cover = c => !c ? "" : c.startsWith("+") ? '<span class="tg ok">' + esc(c.slice(1)) + '</span>' : '<span class="tg nd">' + esc(c) + '</span>';
+  const secSum = c => c.sections.filter(s => !s.gone).reduce((a, s) => a + (+s.words || 0), 0);
+
+  function row(it, num, isCh, first, last) {
+    const dis = it.gone ? " disabled" : "";
+    const sum = isCh ? '<span data-sum></span>' : "";
+    return '<div class="r' + (isCh ? "" : " sec") + (it.gone ? " gone" : "") + '" data-id="' + it.id + '">' +
+      '<div class="n">' + (it.gone ? '<i class="ti ti-minus" aria-hidden="true"></i>' : num) + '</div>' +
+      '<div class="body"><div class="t" role="textbox" aria-label="Title" data-f="title" data-ph="Title" contenteditable="' + !it.gone + '">' + esc(it.title) + '</div>' +
+      ((it.purpose || it.showP) ? '<div class="p" role="textbox" aria-label="Purpose" data-f="purpose" data-ph="One-line purpose" contenteditable="' + !it.gone + '">' + esc(it.purpose) + '</div>' : "") + '</div>' +
+      '<div class="tags" data-tags>' + state(it) + sum + cover(it.cover) + (it.rqs ? '<span class="rq">' + esc(it.rqs) + '</span>' : "") + '</div>' +
+      '<div class="wd"><input inputmode="numeric" data-f="words" value="' + (it.words ? fmt(it.words) : "") + '" placeholder="-" aria-label="Word budget"' + dis + '>w</div>' +
+      '<div class="ctl"><button class="ib" data-act="purp" aria-label="Add or edit purpose"' + dis + '><i class="ti ti-notes"></i></button><button class="ib" data-act="up" aria-label="Move up"' + (first || it.gone ? " disabled" : "") + '><i class="ti ti-arrow-up"></i></button>' +
+      '<button class="ib" data-act="down" aria-label="Move down"' + (last || it.gone ? " disabled" : "") + '><i class="ti ti-arrow-down"></i></button>' +
+      '<button class="ib" data-act="del" aria-label="' + (it.gone ? "Restore" : "Remove") + '"><i class="ti ' + (it.gone ? "ti-arrow-back-up" : "ti-trash") + '"></i></button></div></div>';
+  }
+  function render() {
+    const num = number(), live = chs.filter(c => !c.gone);
+    $("oe-chapters").innerHTML = chs.map((c, ci) => {
+      const firstCh = ci === 0, lastCh = ci === chs.length - 1;
+      return '<div class="ch">' + row(c, num.get(c.id), true, firstCh, lastCh) +
+        c.sections.map((s, si) => row(s, num.get(s.id), false, firstCh && si === 0, lastCh && si === c.sections.length - 1)).join("") +
+        (c.gone ? "" : '<div class="addrow"><button class="link" data-act="addsec" data-id="' + c.id + '"><i class="ti ti-plus" aria-hidden="true"></i>Add section</button></div>') + '</div>';
+    }).join("");
+    summary();
+  }
   function changes() {
     const num = number(), out = [];
     chs.forEach(c => [c, ...c.sections].forEach(it => {
       const o = orig.get(it.id), was = origNum.get(it.id), now = num.get(it.id);
-      if (it.isNew && !it.gone) { out.push("add " + now + ' "' + it.title + '"' + (it.words ? " · " + fmt(it.words) + " words" : "") + (it.purpose ? " · " + it.purpose : "")); return; }
+      if (it.isNew) { if (!it.gone) out.push({k: "add", tag: "new", text: now + ' "' + it.title + '"' + (it.words ? " · " + fmt(it.words) + " words" : "") + (it.purpose ? " · " + it.purpose : "")}); return; }
       if (!o) return;
-      if (it.gone) { out.push("remove " + was + ' "' + o.title + '"'); return; }
-      if (o.title !== it.title) out.push("rename " + was + ' "' + o.title + '" to "' + it.title + '"');
-      if (+o.words !== +it.words) out.push("budget " + was + ": " + fmt(o.words) + " → " + fmt(it.words) + " words");
-      if (o.purpose !== it.purpose) out.push("purpose " + was + ': "' + it.purpose + '"');
-      if (was !== now) out.push("move " + was + " → " + now);
+      if (it.gone) { out.push({k: "remove", tag: "del", text: was + ' "' + o.title + '"'}); return; }
+      if (o.title !== it.title) out.push({k: "rename", tag: "chg", text: was + ' "' + o.title + '" to "' + it.title + '"'});
+      if (+o.words !== +it.words) out.push({k: "budget", tag: "chg", text: was + ": " + fmt(o.words) + " → " + fmt(it.words) + " words"});
+      if (o.purpose !== it.purpose) out.push({k: "purpose", tag: "chg", text: was + ': "' + it.purpose + '"'});
+      if (it.moved && was !== now) out.push({k: "move", tag: "mv", text: was + ' "' + it.title + '" → ' + now});
     }));
-    return out.length ? "outline edit:\n- " + out.join("\n- ") : "";
-  }
-  function render() {
-    const num = number();
-    document.getElementById("oe-chapters").innerHTML = chs.map(c =>
-      '<div class="ch">' + row(c, num.get(c.id), true) + c.sections.map(s => row(s, num.get(s.id), false)).join("") +
-      (c.gone ? "" : '<button class="add" data-act="addsec" data-id="' + c.id + '"><i class="ti ti-plus" aria-hidden="true"></i> Add section</button>') + '</div>').join("");
-    summary();
+    return out;
   }
   function summary() {
-    const live = chs.filter(c => !c.gone), total = live.reduce((a, c) => a + (+c.words || 0), 0), lim = OUTLINE.limit;
-    document.getElementById("oe-total").textContent = "Word budget · " + fmt(total) + (lim ? " of " + fmt(lim) + (total > lim ? " · " + fmt(total - lim) + " over" : total < lim ? " · " + fmt(lim - total) + " left" : "") : "");
-    document.getElementById("oe-bar").innerHTML = live.map((c, i) => '<div style="flex:' + Math.max(1, +c.words || 0) + ';background:' + (i % 2 ? "var(--text-secondary)" : "var(--border-strong)") + '"></div>').join("");
-    const num = number();
-    document.getElementById("oe-legend").textContent = live.map(c => num.get(c.id) + " " + c.title.split(" ").slice(0, 2).join(" ") + " " + fmt(c.words)).join(" · ");
-    const txt = changes();
-    const ta = document.getElementById("oe-out");
-    ta.value = txt || "No changes yet. Edit titles or word budgets, move, add or remove sections above.";
-    ta.rows = Math.max(3, ta.value.split("\n").length + 1);
+    const live = chs.filter(c => !c.gone), total = live.reduce((a, c) => a + (+c.words || 0), 0), lim = OUTLINE.limit, num = number();
+    $("oe-total").innerHTML = fmt(total) + (lim ? ' <span style="font-weight:400;color:var(--text-secondary)">of ' + fmt(lim) + '</span>' +
+      (total > lim ? ' <span class="over">· ' + fmt(total - lim) + ' over</span>' : total < lim ? ' <span style="font-weight:400;color:var(--text-secondary)">· ' + fmt(lim - total) + ' left</span>' : "") : "");
+    const base = Math.max(total, lim || 0, 1);
+    $("oe-bar").innerHTML = live.map((c, i) => '<div style="flex:0 0 ' + ((+c.words || 0) / base * 100) + '%;background:' + SEG[i % SEG.length] + '"></div>').join("");
+    $("oe-legend").innerHTML = live.map((c, i) => '<span><i style="background:' + SEG[i % SEG.length] + '"></i>' + num.get(c.id) + " · " + fmt(c.words) + '</span>').join("");
+    const list = changes();
+    $("oe-count").textContent = list.length ? list.length + (list.length === 1 ? " change" : " changes") : "";
+    $("oe-list").innerHTML = list.length ? list.map(x => '<li><span class="tg ' + x.tag + '">' + x.k + '</span><span>' + esc(x.text) + '</span></li>').join("")
+      : '<li class="empty" style="border:none">Nothing changed yet.</li>';
+    $("oe-out").value = list.length ? "outline edit:\n" + list.map(x => "- " + x.k + " " + x.text).join("\n") : "";
+    $("oe-copy").disabled = !list.length;
+    chs.forEach(c => {
+      const slot = document.querySelector('.r[data-id="' + c.id + '"] [data-sum]'); if (!slot) return;
+      const t = secSum(c), show = !c.gone && c.sections.some(x => !x.gone && x.words) && t !== +c.words;
+      slot.innerHTML = show ? '<span class="sum bad" title="The sections add up to ' + fmt(t) + ', the chapter budget is ' + fmt(c.words) + '">sections total ' + fmt(t) + '</span>' : "";
+    });
     chs.forEach(c => [c, ...c.sections].forEach(it => {
-      const r = document.querySelector('.r[data-id="' + it.id + '"]'); if (!r) return;
-      const old = r.querySelector(".tg.chg,.tg.new"), want = tag(it);
-      if (old && !want) old.remove();
-      if (!old && want) r.querySelector(".t").insertAdjacentHTML("afterend", want);
+      const r = document.querySelector('.r[data-id="' + it.id + '"] [data-tags]'); if (!r) return;
+      const old = r.querySelector(".chg,.new"), want = state(it);
+      if (old) old.remove();
+      if (want) r.insertAdjacentHTML("afterbegin", want);
     }));
   }
-  const root = document.getElementById("oe");
+  const find = id => { for (const c of chs) { if (c.id === id) return {it: c, list: chs}; const s = c.sections.find(x => x.id === id); if (s) return {it: s, list: c.sections, ch: c}; } return null; };
+  const root = $("oe");
   root.addEventListener("input", e => {
     const f = e.target.dataset.f; if (!f) return;
-    const id = +(e.target.dataset.id || e.target.closest(".r").dataset.id), hit = find(id); if (!hit) return;
-    hit.it[f] = f === "words" ? (+e.target.value || 0) : e.target.value;
+    const hit = find(+e.target.closest(".r").dataset.id); if (!hit) return;
+    hit.it[f] = f === "words" ? (+String(e.target.value).replace(/\D/g, "") || 0) : e.target.textContent.replace(/\s+/g, " ").trim();
     summary();
   });
+  root.addEventListener("focusout", e => { if (e.target.dataset.f === "words") { const hit = find(+e.target.closest(".r").dataset.id); e.target.value = hit && hit.it.words ? fmt(hit.it.words) : ""; summary(); } });
+  root.addEventListener("keydown", e => { if (e.key === "Enter" && e.target.dataset && e.target.dataset.f) { e.preventDefault(); e.target.blur(); } });
+  root.addEventListener("paste", e => { if (e.target.isContentEditable) { e.preventDefault(); document.execCommand("insertText", false, (e.clipboardData.getData("text/plain") || "").replace(/\s+/g, " ")); } });
   root.addEventListener("click", e => {
-    const b = e.target.closest("button"); if (!b) return;
-    const act = b.dataset.act, msg = document.getElementById("oe-msg");
+    const b = e.target.closest("button"); if (!b || b.disabled) return;
+    const act = b.dataset.act, msg = $("oe-msg");
     if (act === "copy") {
-      const ta = document.getElementById("oe-out"), txt = changes();
-      if (!txt) { msg.textContent = "Nothing to copy yet."; return; }
-      const done = () => { msg.textContent = "Copied. Paste it into the chat."; };
-      const fallback = () => { ta.focus(); ta.select(); msg.textContent = "Selected. Press Cmd+C (Ctrl+C), then paste it into the chat."; };
-      let settled = false;
-      const once = f => () => { if (!settled) { settled = true; f(); } };
+      const txt = $("oe-out").value; if (!txt) return;
+      const done = () => { msg.textContent = "Copied - now paste it into the chat."; };
+      const fallback = () => { const ta = $("oe-out"); ta.classList.remove("raw"); ta.style.cssText = "width:100%;min-height:90px;margin-top:8px;font:12px/1.5 var(--font-mono);border:0.5px solid var(--border);border-radius:8px;padding:8px;background:var(--surface-1);color:var(--text-primary)"; ta.focus(); ta.select(); msg.textContent = "Press Cmd+C (Ctrl+C), then paste it into the chat."; };
+      let settled = false; const once = f => () => { if (!settled) { settled = true; f(); } };
       setTimeout(once(fallback), 800);
       try { navigator.clipboard.writeText(txt).then(once(done), once(fallback)); } catch (err) { once(fallback)(); }
       return;
     }
-    if (act === "reset") { chs = start(); render(); msg.textContent = ""; return; }
-    if (act === "addch") { const c = {id: ++uid, title: "New chapter", words: 0, rqs: "", purpose: "", cover: "", gone: false, isNew: true, parent: null, sections: []}; chs.push(c); render(); return; }
-    if (act === "addsec") { const c = find(+b.dataset.id).it; c.sections.push({id: ++uid, title: "New section", words: 0, rqs: "", purpose: "", cover: "", gone: false, isNew: true, parent: c.id}); render(); return; }
+    if (act === "reset") { chs = start(); msg.textContent = ""; $("oe-out").className = "raw"; $("oe-out").style.cssText = ""; render(); return; }
+    if (act === "addch") { chs.push({id: ++uid, title: "New chapter", words: 0, rqs: "", purpose: "", cover: "", gone: false, isNew: true, parent: null, sections: []}); render(); focusLast(); return; }
+    if (act === "addsec") { const c = find(+b.dataset.id).it; c.sections.push({id: ++uid, title: "New section", words: 0, rqs: "", purpose: "", cover: "", gone: false, isNew: true, parent: c.id}); render(); focusLast(); return; }
     const r = b.closest(".r"); if (!r) return;
     const hit = find(+r.dataset.id), i = hit.list.indexOf(hit.it);
+    if (act === "purp") { hit.it.showP = true; render(); const pi = document.querySelector('.r[data-id="' + hit.it.id + '"] .p'); if (pi) { pi.focus(); getSelection().selectAllChildren(pi); getSelection().collapseToEnd(); } return; }
     if (act === "del") { if (hit.it.isNew) hit.list.splice(i, 1); else hit.it.gone = !hit.it.gone; }
-    if (act === "up" && i > 0) { hit.list.splice(i, 1); hit.list.splice(i - 1, 0, hit.it); }
-    else if (act === "up" && hit.ch) { const ci = chs.indexOf(hit.ch); if (ci > 0) { hit.list.splice(i, 1); chs[ci - 1].sections.push(hit.it); hit.it.parent = chs[ci - 1].id; } }
-    if (act === "down" && i < hit.list.length - 1) { hit.list.splice(i, 1); hit.list.splice(i + 1, 0, hit.it); }
-    else if (act === "down" && hit.ch && i === hit.list.length - 1) { const ci = chs.indexOf(hit.ch); if (ci < chs.length - 1) { hit.list.splice(i, 1); chs[ci + 1].sections.unshift(hit.it); hit.it.parent = chs[ci + 1].id; } }
+    if (act === "up" || act === "down") hit.it.moved = true;
+    if (act === "up") {
+      if (i > 0) { hit.list.splice(i, 1); hit.list.splice(i - 1, 0, hit.it); }
+      else if (hit.ch) { const ci = chs.indexOf(hit.ch); if (ci > 0) { hit.list.splice(i, 1); chs[ci - 1].sections.push(hit.it); hit.it.parent = chs[ci - 1].id; } }
+    }
+    if (act === "down") {
+      if (i < hit.list.length - 1) { hit.list.splice(i, 1); hit.list.splice(i + 1, 0, hit.it); }
+      else if (hit.ch) { const ci = chs.indexOf(hit.ch); if (ci < chs.length - 1) { hit.list.splice(i, 1); chs[ci + 1].sections.unshift(hit.it); hit.it.parent = chs[ci + 1].id; } }
+    }
     render();
+    const again = document.querySelector('.r[data-id="' + hit.it.id + '"] [data-act="' + act + '"]'); if (again && !again.disabled) again.focus();
   });
+  function focusLast() { const el = [...document.querySelectorAll(".oe .r:not(.gone) .t")].find(x => x.textContent === "New section" || x.textContent === "New chapter");
+    if (el) { el.focus(); const rg = document.createRange(); rg.selectNodeContents(el); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(rg); } }
   render();
 })();
 </script>
