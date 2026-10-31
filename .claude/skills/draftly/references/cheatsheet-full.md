@@ -55,6 +55,20 @@ More: `debate the Skeptic and the Historian` · `play the examiner` · `go deepe
 
 Before writing, you get a short **plan** to check: say **go**, change it, or say *just write it* to skip. Every draft is a new version (v1, v2…), never overwritten, and ends with **Notes for you** and a **style check**.
 
+### 📄 Your own Word document (My Thesis Drafts folder)
+Put your thesis document in the **My Thesis Drafts** folder and keep working on it in Word. Draftly reads it but **never changes it** - anything it writes goes into a new file with "Draftly" in the name.
+
+| Type | Example |
+|---|---|
+| `how many words have I written?` | words per chapter and section, against your outline budgets |
+| `review [section] in my thesis` | `/draftly review 2.2 in my thesis`: feedback only, nothing changed |
+| `polish [section] from my thesis` | a plan first, then a cleaned-up copy as a new Word file beside the chat |
+| `which claims in [chapter] have no source?` | sentences that need a footnote, matched to your library |
+| `put my [section] draft in Word` | `/draftly export my 3.1 draft to Word` |
+| `sync my outline` | what changed in your document vs your outline, and which side changed; update either way |
+
+Tip: use Word's **Heading 1** for chapters and **Heading 2** for sections, so Draftly can follow your structure.
+
 ### 📚 Library
 | Type | Example |
 |---|---|

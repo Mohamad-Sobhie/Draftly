@@ -67,7 +67,7 @@ if have ocrmypdf; then ok "ocrmypdf found"; else
 fi
 
 # 4. Folders --------------------------------------------------------------------
-for d in references/inbox references/pdf references/text notes sessions drafts; do
+for d in references/inbox references/pdf references/text notes sessions drafts "My Thesis Drafts"; do
   mkdir -p "$d"; [ -f "$d/.gitkeep" ] || touch "$d/.gitkeep"
 done
 ok "Folders ready"

@@ -165,7 +165,7 @@ def check(cond: bool, msg: str, results: list) -> None:
 
 
 def make_project(root: Path) -> None:
-    for sub in ["references/inbox", "references/pdf", "references/text", "notes", "sessions", "drafts"]:
+    for sub in ["references/inbox", "references/pdf", "references/text", "notes", "sessions", "drafts", "My Thesis Drafts"]:
         (root / sub).mkdir(parents=True, exist_ok=True)
     (root / "references" / "INDEX.md").write_text(
         "# Library index\n\n```\n## template-id\n- Citation: should be ignored\n```\n", encoding="utf-8")
@@ -324,6 +324,58 @@ def installer_gitignore(results: list) -> None:
     check(bool(m) and m.group(1) == gi.read_text(encoding="utf-8"), "installer's .gitignore matches the repo's", results)
 
 
+def word_thesis(tmp: Path, results: list) -> None:
+    """The student's own Word document: read-only reading, sync direction, export."""
+    import docx
+    root = tmp / "project-doc"
+    make_project(root)
+    (root / "thesis-brief.md").write_text(
+        "# Thesis brief\n\n## Outline\n- 1 Introduction · 1,000 words\n- 2 Banks · 2,000 words\n"
+        "  - 2.1 Bank exposures · 1,000 words\n  - 2.2 Not written yet · 1,000 words\n- 3 Conclusion · 1,000 words\n",
+        encoding="utf-8")
+
+    def write_doc(renamed: bool) -> Path:
+        d = docx.Document()
+        d.add_heading("Abstract", 1); d.add_paragraph("Summary text. " * 5)
+        d.add_heading("Introduction", 1); d.add_paragraph("Intro words here. " * 20)
+        d.add_heading("Banks", 1)
+        d.add_heading("Exposures of banks to funds" if renamed else "Bank exposures", 2); d.add_paragraph("Banks lend. " * 30)
+        if renamed:
+            d.add_heading("Archegos case study", 2); d.add_paragraph("A case. " * 10)
+        d.add_heading("Conclusion", 1); d.add_paragraph("It depends. " * 10)
+        p = root / "My Thesis Drafts" / "My thesis.docx"
+        d.save(str(p))
+        return p
+
+    doc = write_doc(False)
+    r = run("thesis_doc.py", "read", "--root", str(root))
+    nums = [h["num"] for h in r.get("headings", []) if h["num"]]
+    check(r.get("ok") and nums == ["1", "2", "2.1", "3"] and r.get("detected_by") == "heading styles",
+          f"Word document headings read, front matter skipped ({nums})", results)
+    r = run("thesis_doc.py", "sync", "--root", str(root))
+    kinds = sorted(x["type"] for x in r.get("differences", []))
+    check(r.get("ok") and r.get("in_sync") is True and kinds == ["not_started"],
+          "document matches outline; unwritten section is 'not started', not a conflict", results)
+    run("thesis_doc.py", "sync", "--record", "--root", str(root))
+    doc = write_doc(True)
+    fingerprint = doc.read_bytes()
+    r = run("thesis_doc.py", "sync", "--root", str(root))
+    kinds = sorted(x["type"] for x in r.get("differences", []))
+    check(r.get("direction") == "doc" and "renamed" in kinds and "added_in_doc" in kinds,
+          "sync sees the student changed the document (rename + new section)", results)
+    r = run("thesis_doc.py", "read", "--section", "2.1", "--root", str(root))
+    check(r.get("ok") and (root / r.get("text_file", "x")).exists(), "one section extracted for review", results)
+    draft = root / "drafts" / "ch2-v1.md"
+    draft.write_text("## 2.1 Test\n\nA claim.[^1] [CITATION NEEDED: data]\n\n[^1]: Act 2000, s 1.\n\n## Notes for you\n- x\n",
+                     encoding="utf-8")
+    r = run("thesis_doc.py", "export", str(draft), "--root", str(root))
+    out = root / r.get("output", "missing")
+    check(r.get("ok") and out.exists() and "Draftly" in out.name and r.get("notes") == 1, "draft exported to a new Word file", results)
+    r = run("thesis_doc.py", "find", "--root", str(root))
+    check(r.get("file") == "My thesis.docx", "Draftly exports are never taken for the student's document", results)
+    check(doc.read_bytes() == fingerprint, "student's document byte-for-byte unchanged after read, sync and export", results)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--full", action="store_true")
@@ -341,6 +393,7 @@ def main() -> int:
         installer_gitignore(results)
         if args.full:
             full(tmp, results)
+            word_thesis(tmp, results)
     except Exception as e:  # noqa: BLE001
         results.append((False, f"crashed: {type(e).__name__}: {e}"))
         print(f"  FAIL  crashed: {type(e).__name__}: {e}")

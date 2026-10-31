@@ -6,6 +6,7 @@ references/bibliography.md
 notes/*
 sessions/*
 drafts/*
+My Thesis Drafts/*
 thesis-brief.md
 library.html
 !references/pdf/.gitkeep
@@ -14,6 +15,7 @@ library.html
 !notes/.gitkeep
 !sessions/.gitkeep
 !drafts/.gitkeep
+!My Thesis Drafts/.gitkeep
 
 # --- Local tooling ---
 .venv/

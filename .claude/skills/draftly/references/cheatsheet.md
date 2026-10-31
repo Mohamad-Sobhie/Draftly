@@ -28,6 +28,14 @@ Example: `/draftly discuss whether the PRA should regulate LDI funds directly`
 
 Example: `/draftly draft 3.1: banks only see their own exposure; 2022 showed the gap; my view is…`
 
+### 📄 Your own Word document
+Keep it in the **My Thesis Drafts** folder. Draftly only reads it, never changes it.
+
+| Type | You get |
+|---|---|
+| `/draftly review 2.2 in my thesis` | feedback on what you wrote: argument, missing footnotes, style |
+| `/draftly sync my outline` | what changed between your document and your outline |
+
 ### 📚 Sources
 Drag a PDF in and type `add it` · ask `what do my sources say about [topic]?`
 

@@ -30,6 +30,8 @@ Defaults are set for a UK law student (LLM) writing on UK/EU bank regulation and
 | `references/inbox/` | Drop files here to have Claude add them. |
 | `references/pdf/`, `references/text/` | Original files and extracted text (git-ignored). |
 | `notes/`, `sessions/`, `drafts/` | Reading notes, brainstorm/discussion records, versioned drafts (git-ignored). |
+| `My Thesis Drafts/` | The student's own Word document. Read-only for Claude; Draftly's exports go in as new files with "Draftly" in the name (git-ignored). |
+| `scripts/thesis_doc.py` | Reads the student's Word document (headings, words, sections, footnotes), syncs it with the outline, exports drafts to `.docx`. |
 | `library.html` | Generated library page (git-ignored). |
 
 ### Prerequisites
@@ -163,6 +165,16 @@ Open the **Claude** app, go to **Code**, and open your **draftly** thesis folder
 6. 🗂️ **Outline**: plans your table of contents from your abstract (two options, with word budgets and which sources cover each section), and lets you change it any time. Type *"/draftly outline"* again later and it opens your outline as an editable board: change titles and word budgets, move, add or remove sections, then copy your changes into the chat. You can also just say *"merge 2.1 and 2.2"*.
 
 You don't have to use the menu: just say what you need. Type **/draftly help** for the basics, or **/draftly help all** for everything you can ask, with examples.
+
+### Your own Word document
+
+Write your thesis in Word as usual, and keep the file in the **My Thesis Drafts** folder inside your thesis folder. Draftly only **reads** it and never changes it. Then you can ask:
+- *"How many words have I written?"*: per chapter, against your outline.
+- *"Review 2.2 in my thesis"*: feedback on what you wrote.
+- *"Polish 2.2 from my thesis"*: a cleaned-up copy as a new Word file, so you can choose what to take.
+- *"Sync my outline"*: if you renamed or added sections in Word, Draftly spots it and updates your outline (after you say go).
+
+Use Word's **Heading 1** for chapters and **Heading 2** for sections so Draftly can follow your structure.
 
 ### Adding a source
 

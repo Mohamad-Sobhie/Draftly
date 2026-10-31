@@ -23,6 +23,7 @@ references/bibliography.md
 notes/*
 sessions/*
 drafts/*
+My Thesis Drafts/*
 thesis-brief.md
 library.html
 !references/pdf/.gitkeep
@@ -31,6 +32,7 @@ library.html
 !notes/.gitkeep
 !sessions/.gitkeep
 !drafts/.gitkeep
+!My Thesis Drafts/.gitkeep
 
 # --- Local tooling ---
 .venv/
@@ -46,7 +48,7 @@ const UPDATABLE = [/^\.claude\/skills\/draftly\//, /^\.claude\/settings\.json$/,
 const SKIP = [/^bin\//, /^package\.json$/, /^node_modules\//, /^\.git\//, /^\.venv\//, /__pycache__/, /\.pyc$/,
   /^\.claude\/settings\.local\.json$/, /^library\.html$/, /^thesis-brief\.md$/, /^\.DS_Store$/];
 // Private content that may sit in a checkout of the template: only the empty placeholders are copied.
-const PRIVATE_FILE = /^(references\/(pdf|text|inbox)|notes|sessions|drafts)\/(?!\.gitkeep$)|^references\/bibliography\.md$/;
+const PRIVATE_FILE = /^(references\/(pdf|text|inbox)|notes|sessions|drafts|My Thesis Drafts)\/(?!\.gitkeep$)|^references\/bibliography\.md$/;
 
 const c = process.stdout.isTTY ? { b: '\x1b[1m', g: '\x1b[32m', y: '\x1b[33m', r: '\x1b[31m', d: '\x1b[2m', x: '\x1b[0m' }
   : { b: '', g: '', y: '', r: '', d: '', x: '' };

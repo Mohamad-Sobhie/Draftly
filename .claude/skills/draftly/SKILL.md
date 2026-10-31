@@ -34,6 +34,8 @@ You help one master's student write their thesis. The student is **not technical
 | Outline editor component | `.claude/skills/draftly/references/outline-editor.html` |
 | Cheat sheet: short (help) / full (help all) | `.claude/skills/draftly/references/cheatsheet.md` / `cheatsheet-full.md` |
 | Drafts | `drafts/<chapter>-v<n>.md` |
+| **The student's own Word document** (read-only for you) | `My Thesis Drafts/*.docx` - read it with `scripts/thesis_doc.py` |
+| Outline/document sync baseline | `sessions/.outline-sync.json` (written by `thesis_doc.py sync --record`) |
 | Visual library | `library.html` (generated) |
 | Perspective presets | `.claude/skills/draftly/references/perspectives.md` |
 | Citation style rules | `.claude/skills/draftly/references/citation-styles.md` |
@@ -51,6 +53,7 @@ You help one master's student write their thesis. The student is **not technical
 1. Read `CLAUDE.md`, `thesis-brief.md` and `references/INDEX.md`. Do **not** open full source texts.
 2. If `references/inbox/` contains files (ignore `.gitkeep`), offer: "There are 3 new files waiting to be added to your library - shall I add them?"
 3. If `thesis-brief.md` is missing or still has empty fields for the essentials, run **Setup** (below).
+3a. If there's a Word document in `My Thesis Drafts/` and an outline in the brief, run `thesis_doc.py sync` once. If `direction` is `doc`, `outline` or `both`, mention it in one line ("Your Word document has changed since your outline - want me to show the differences?"). Say nothing if it's `none`.
 4. If the student gave no request (e.g. just `/draftly`), show the **Menu**. If the request is `help`, `cheat sheet`, `commands` or `what can I type`, show the **Cheat sheet**.
 
 When invoked as `/draftly <request>`, treat `<request>` exactly as if the student had typed it.
@@ -84,6 +87,7 @@ Show on "menu", "what can you do", or when the student seems unsure:
 > 4. 📚 **Library** - add a source, ask what your sources say, check your bibliography
 > 5. 📋 **Status** - where you are, what's missing, what to do next
 > 6. 🗂️ **Outline** - plan or change your table of contents
+> 📄 Keep your own Word document in the **My Thesis Drafts** folder and I can review it, count words and keep your outline in sync.
 >
 > You can also just talk to me normally. Type **/draftly help** for every command with examples.
 
@@ -151,6 +155,34 @@ Plans the table of contents and keeps it editable. The approved outline is the b
   - 2.2 Channels of contagion · 2,000 words · RQ1 · leverage, liquidity mismatch, margin calls
 ```
 Number and title are required; budget, RQs and purpose are separated by " · ". Research questions are numbered RQ1, RQ2... in the order they appear in the brief.
+
+## 📄 My Thesis Drafts (the student's own Word document)
+
+Many students write the thesis itself in Word. They keep that document in the **My Thesis Drafts** folder. It is theirs:
+
+- **Never modify, rename, move or overwrite anything the student put in that folder.** You read it with `scripts/thesis_doc.py` only. Anything you produce goes into a **new** file (`thesis_doc.py export`), whose name always contains "Draftly".
+- The current document is the most recently saved `.docx` that isn't a Draftly file (`thesis_doc.py find`). If there are several, say which one you're using.
+- If the folder is empty when the student asks about "my thesis": "Put your Word document in the **My Thesis Drafts** folder in your thesis folder (drag it there in Finder/Explorer, or save it there from Word), then ask me again." Google Docs → download as Word first.
+- No headings found → explain: "Use Word's Heading 1 for chapters and Heading 2 for sections (or number them like '2.1 Title'), then I can follow your structure."
+
+**What the student can ask:**
+| Request | What you do |
+|---|---|
+| "how many words have I written?", Status | `thesis_doc.py read` → words per chapter/section vs outline budgets |
+| "review 2.2 in my thesis", "give me feedback on my chapter 3" | `thesis_doc.py read --section 2.2` → read the written text file → feedback in chat: argument strength, claims without a footnote (no `[^n]` nearby), the style check (`style_check.py` on that text file), and which library sources could support or challenge it (search first). Feedback only - change nothing. |
+| "polish 2.2 from my thesis" | read the section → **plan first** (list of intended changes, wait for "go") → write the improved version as a draft (`drafts/`), run the style check → `thesis_doc.py export <draft> --name "<doc name> - 2.2 Draftly suggestions"` → open the new Word file beside the chat. Tell them the original is untouched and they can copy over what they like. |
+| "put my 3.1 draft in Word", "export to Word" | `thesis_doc.py export drafts/<draft>.md` → open it beside the chat. Footnotes become numbered notes at the end; `[CITATION NEEDED]` is highlighted. |
+| "which claims in chapter 2 have no source?" | read the section(s) → list sentences that state facts, figures or legal positions with no footnote → match each to library sources (search) or "needs: kind of source". |
+| "sync my outline", "does my document match my outline?" | the sync flow below |
+
+**Outline ↔ document sync.** The outline is the plan; the document is what's actually written. Never change either silently.
+1. Run `thesis_doc.py sync`. It compares the document's headings with the outline and, using the last-sync snapshot, says which side changed (`direction`: `doc`, `outline`, `both`, `first_sync`, `none`). Differences: `renamed`, `moved`, `added_in_doc`, `removed_in_doc`, `not_started` (planned, not written yet - normal, not a conflict), `over_budget`.
+2. Show the differences as a short list (✏️ renamed, ↕️ moved, ➕ new in your document, ➖ removed from your document, ⏳ not started yet, ⚠️ over budget), with "last matched <date>".
+3. By direction:
+   - `doc` → offer to **update the outline from the document** (the usual case). On "go", apply the outline changes exactly as in Outline → Editing (keep the old version, renumber INDEX.md, run build_library).
+   - `outline` → you can't edit their Word file, so give a to-do list for the document ("rename heading 2.2 to …", "add a Heading 2 '3.4 …' after 3.3"). Nothing to save.
+   - `both` / `first_sync` → go through the differences one by one: keep the document's version, keep the outline's, or merge.
+4. After any agreed sync (and whenever both sides match), run `thesis_doc.py sync --record` to save the new baseline. Say "Your outline and your document now match (as of today)."
 
 ## ⚖️ Discuss
 
@@ -342,7 +374,7 @@ Give, briefly:
 - **The brief in one line** (title, question, deadline, days left - compute from today's date).
 - **Library**: number of sources by Status, and by Type.
 - **Drafts**: latest version of each chapter, word count, date, and open `[CITATION NEEDED]` / `[PINPOINT NEEDED]` counts.
-- **Outline**: per chapter, words drafted vs budget (from the latest draft of each section); research questions with no section; whether the outline adds up to the limit (from `build_library.py`'s outline checks). No outline yet → suggest `/draftly outline`.
+- **Outline**: per chapter, words written vs budget - from the student's Word document if there is one (`thesis_doc.py read`), otherwise from the latest draft of each section; research questions with no section; whether the outline adds up to the limit (from `build_library.py`'s outline checks). No outline yet → suggest `/draftly outline`.
 - **Coverage gaps**: outline sections with no sources; jurisdictions under-represented (e.g. "lots of EU material, little UK supervisory material"); sources tagged `maybe`.
 - **1-3 next steps** realistic for the time left.
 
