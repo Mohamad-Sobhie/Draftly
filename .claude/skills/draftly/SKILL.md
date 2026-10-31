@@ -70,7 +70,7 @@ Ask everything in **one** friendly message, numbered so they can answer briefly:
 10. The university's rules on AI use (paste them or describe them; "don't know" is fine)
 11. Optional: a rough outline/chapter plan, and any reading list or bibliography they already have
 
-Defaults if they skip something: language English; citation style OSCOLA for law, APA 7 otherwise. Write the answers into `thesis-brief.md` using the template in `CLAUDE.md`. If they paste a bibliography, save it to `references/bibliography.md` (one entry per line, `- ` bullets). Confirm in plain words ("Got it - I've noted your topic, deadline and rules"), point out anything that looks risky (e.g. a research question that is too broad for the word limit), then offer the menu. After setup, offer once to run a **bibliography check** if a bibliography exists.
+Defaults if they skip something: language English; citation style OSCOLA for law, APA 7 otherwise. Write the answers into `thesis-brief.md` using the template in `CLAUDE.md`. If they paste a bibliography, save it to `references/bibliography.md` (one entry per line, `- ` bullets). Confirm in plain words ("Got it - I've noted your topic, deadline and rules"), point out anything that looks risky (e.g. a research question that is too broad for the word limit), then offer the menu. If they gave no outline, offer to plan one: "Want me to propose a table of contents from your abstract?" (→ Outline). After setup, offer once to run a **bibliography check** if a bibliography exists.
 
 ## Menu
 
@@ -82,10 +82,11 @@ Show on "menu", "what can you do", or when the student seems unsure:
 > 3. ✍️ **Write** - turn your points into a draft, or polish your own text
 > 4. 📚 **Library** - add a source, ask what your sources say, check your bibliography
 > 5. 📋 **Status** - where you are, what's missing, what to do next
+> 6. 🗂️ **Outline** - plan or change your table of contents
 >
 > You can also just talk to me normally. Type **/draftly help** for every command with examples.
 
-If the student just talks, infer the mode and use its label: `[Brainstorm]`, `[Discuss]`, `[Write]`, `[Library]`, `[Status]`, or `[Setup]`. Answering a question is fine without a mode - use `[Chat]`.
+If the student just talks, infer the mode and use its label: `[Brainstorm]`, `[Discuss]`, `[Write]`, `[Library]`, `[Status]`, `[Outline]`, or `[Setup]`. Answering a question is fine without a mode - use `[Chat]`.
 
 ## Cheat sheet
 
@@ -101,6 +102,40 @@ On `help`, `cheat sheet`, `commands` or "what can I type": read `cheatsheet.md` 
 4. Phrase gaps as **"to check"**, never as fact ("To check: whether anyone has compared UK and EU liquidity tools for money market funds since 2023").
 5. End with **2-3 narrowing questions**.
 6. Offer to save the chosen ideas. If yes, write `sessions/YYYY-MM-DD-brainstorm-<topic>.md` (ideas kept, why, open questions). Say "I saved these ideas" - no path.
+
+## 🗂️ Outline
+
+Plans the table of contents and keeps it editable. The approved outline is the backbone for everything else: the library page and Status use its numbers, Write uses its word budgets.
+
+**Triggers:** "outline", "plan my table of contents", "structure my thesis", "chapter plan", or any change to the structure ("merge 2.1 and 2.2", "move the comparison to chapter 4", "add a section on X", "give chapter 3 more words").
+
+### Creating an outline
+1. **Read** the brief (title, research questions, method, word limit), the student's abstract or other own documents in the folder (if it's a Word file and reading needs a tool, ask once), any existing outline, saved sessions, and INDEX.md. Don't open full sources.
+2. **Propose two genuinely different structures** (e.g. A thematic: problem → option 1 → option 2 → backstop → conclusion; B comparative: framework → UK → EU → comparison → recommendations). Say in one line what each is good for and which you'd pick and why.
+3. For each structure, every chapter and section has: number (1, 2, 2.1...), short title, word budget, the research question(s) it answers, and one-line purpose. Chapter budgets add up to the word limit; section budgets add up to their chapter. Standard thesis parts (introduction with method, literature/background, conclusion) are included unless the student's university format says otherwise.
+4. **Library coverage per section:** ✅ n sources (from INDEX.md "Relevant for", matched by topic if the numbers don't exist yet) or ⚠️ the kind of source missing.
+5. **Honesty checks** (state them plainly): a research question no section answers; a chapter that answers none; a section too big or too small for its budget; a structure that doesn't fit the method (e.g. a comparative question with no comparison chapter).
+6. **Show it as cards** (template in `visual-cards.md`, one widget per structure, or one widget with both), then the *Next:* line: *Next: "use A" / "use B" · or tell me what to change*. **Nothing is saved yet** - same plan-first rule as Write.
+7. After the student chooses (and any changes), show the final version once more only if something changed, and **save on "go"/"use A"/"looks good"**.
+
+### Editing an outline
+- The student describes the change in plain words. Show the **updated outline** with changed lines marked (✏️ changed, ➕ new, ➖ removed, ↕️ moved) and the effect on budgets ("chapter 3 now 5,000 words - 500 over your limit; take it from chapter 2?"). Wait for "go".
+- Renumbering: show the old → new numbers for every section that moves.
+- On "go":
+  1. Keep the previous version: write it to `sessions/YYYY-MM-DD-outline-v<n>.md` (next free number) before changing anything.
+  2. Write the new `## Outline` section into `thesis-brief.md` (format below), replacing the old one; leave the rest of the brief untouched.
+  3. If numbers changed: update the "Relevant for" numbers in INDEX.md to the new numbers, and tell the student which drafts belong to renumbered sections (don't rename draft files; just say "your draft of old 2.2 is now section 3.1").
+  4. Run `build_library.py` and use its outline checks (`outline_vs_limit`, `research_questions_without_section`, `chapters_over_budget`, `sections_without_sources`) in the confirmation: "Saved. Your outline now adds up to 15,000 words; RQ3 still has no section."
+- "show my outline" → show the current one as cards (no changes, no saving). "undo the last outline change" → restore the latest `sessions/...-outline-v<n>.md` (after showing it and getting "go").
+
+### Saved format (in `thesis-brief.md`, section `## Outline`)
+```
+- 1 Introduction · 1,500 words · RQ1 · the problem, method and roadmap
+- 2 How NBFIs create systemic risk · 3,000 words · RQ1
+  - 2.1 What NBFIs are · 1,000 words · RQ1 · definitions and scope
+  - 2.2 Channels of contagion · 2,000 words · RQ1 · leverage, liquidity mismatch, margin calls
+```
+Number and title are required; budget, RQs and purpose are separated by " · ". Research questions are numbered RQ1, RQ2... in the order they appear in the brief.
 
 ## ⚖️ Discuss
 
@@ -179,7 +214,7 @@ Reply "go" to write it, or tell me what to change.
 ```
 
 - One line per paragraph: its point, and the source it will cite (✅ in the library / ⚠️ needs a source). Map every paragraph back to the student's own points; if a planned paragraph has no basis in their points, mark it "(my suggestion)".
-- Give the target word count and how it fits the limit.
+- Give the target word count: the section's budget from the outline if there is one ("outline budget for 3.1: 2,500 words"), otherwise how it fits the overall limit. If there's no outline yet, suggest making one first (but don't insist).
 - End with 1-2 choices to confirm and the go-ahead line.
 - If the student changes something, show the updated plan (only the changed lines) and wait again.
 - **Skip the preview** only when the student says so ("just write it", "no plan", "go straight to the draft") or has already approved a plan for this section in this conversation.
@@ -290,6 +325,7 @@ Give, briefly:
 - **The brief in one line** (title, question, deadline, days left - compute from today's date).
 - **Library**: number of sources by Status, and by Type.
 - **Drafts**: latest version of each chapter, word count, date, and open `[CITATION NEEDED]` / `[PINPOINT NEEDED]` counts.
+- **Outline**: per chapter, words drafted vs budget (from the latest draft of each section); research questions with no section; whether the outline adds up to the limit (from `build_library.py`'s outline checks). No outline yet → suggest `/draftly outline`.
 - **Coverage gaps**: outline sections with no sources; jurisdictions under-represented (e.g. "lots of EU material, little UK supervisory material"); sources tagged `maybe`.
 - **1-3 next steps** realistic for the time left.
 

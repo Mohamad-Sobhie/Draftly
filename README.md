@@ -148,7 +148,7 @@ The repo is also the npm package `create-draftly` (`package.json` + `bin/create-
 
 Open the **Claude** app, go to **Code**, and open your **draftly** thesis folder. (Your setup person will show you once.) Then type **menu**.
 
-### The five things it does
+### The six things it does
 
 1. 💡 **Brainstorm**: ideas, angles, research questions and possible gaps. *"Brainstorm angles for chapter 3."*
 2. ⚖️ **Discuss**: your topic through five lenses: 🟦 the Practitioner, 🟥 the Skeptic, 🟩 the Economist, 🟨 the Historian and 🟪 the Academic. You see where they clash and what examiners might ask, shown as colour-coded cards right in the chat. Say *"save it as a page"* if you want a copy to keep or print. *"Discuss whether NBFIs should be regulated directly."* You can also say *"debate the Skeptic and the Historian"*, *"play the examiner"*, or *"use schools of thought instead"*.
@@ -160,6 +160,7 @@ Open the **Claude** app, go to **Code**, and open your **draftly** thesis folder
 3. ✍️ **Write**: turns **your** points into a draft, or polishes your own text. *"Here are my points for 3.2, draft it."* Before writing, Claude shows a short plan (one line per paragraph, with the sources it will use) and waits for you to say **go**. Every draft is saved as a new version, so nothing is lost. Drafts are written plainly and precisely, without AI-sounding filler, and each one ends with a short style check.
 4. 📚 **Library**: your sources. *"What do my sources say about liquidity mismatch?"*
 5. 📋 **Status**: where you are, what's missing, what to do next. *"Where am I?"*
+6. 🗂️ **Outline**: plans your table of contents from your abstract (two options, with word budgets and which sources cover each section), and lets you change it any time. *"/draftly outline"*, then e.g. *"merge 2.1 and 2.2"*.
 
 You don't have to use the menu: just say what you need. Type **/draftly help** for the basics, or **/draftly help all** for everything you can ask, with examples.
 

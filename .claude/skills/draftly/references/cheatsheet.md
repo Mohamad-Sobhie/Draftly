@@ -1,5 +1,12 @@
 # 📖 Draftly: the basics
 
+### 🗂️ Plan your table of contents
+| Type | You get |
+|---|---|
+| `/draftly outline` | two possible structures from your abstract, with word budgets |
+| `use A` (or `use B`) | saves that structure as your outline |
+| `/draftly outline: [change]` | e.g. `merge 2.1 and 2.2` · `move the UK/EU comparison to chapter 4` · `give chapter 3 500 more words` |
+
 ### ⚖️ Discuss your question (the five perspectives)
 🟦 Practitioner · 🟥 Skeptic · 🟩 Economist · 🟨 Historian · 🟪 Academic
 

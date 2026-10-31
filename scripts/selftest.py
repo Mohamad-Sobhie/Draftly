@@ -200,7 +200,9 @@ def quick(tmp: Path, results: list) -> None:
     (root / "drafts" / "ch1-test-v1.md").write_text(
         "Claim one.[CITATION NEEDED: FSB report] Claim two [PINPOINT NEEDED].\n", encoding="utf-8")
     (root / "thesis-brief.md").write_text(
-        "# Thesis brief\n- Working title: Test thesis\n\n## Outline\n- 1 Introduction\n- 2.1 Banks\n- 3 Funds\n",
+        "# Thesis brief\n- Working title: Test thesis\n- Research question(s):\n  1. First?\n  2. Second?\n"
+        "- Word limit (footnotes counted?): 10,000 (no)\n\n## Outline\n- 1 Introduction · 2,000 words · RQ1\n"
+        "- 2 Banks · 3,000 words · RQ1\n  - 2.1 Banks · 4,000 words · RQ1 · too big\n- 3 Funds · 4,000 words\n",
         encoding="utf-8")
     b = run("build_library.py", "--root", str(root))
     html = (root / "library.html").read_text() if (root / "library.html").exists() else ""
@@ -208,6 +210,11 @@ def quick(tmp: Path, results: list) -> None:
     check("testauthor-2024-shadow" in html and "template-id" not in html, "entry rendered, template ignored", results)
     check(b.get("citation_needed") == 1 and b.get("pinpoint_needed") == 1, "citation markers counted", results)
     check(b.get("sections_without_sources") == ["1"], "sections without sources detected", results)
+    check(b.get("outline_words") == 9000 and b.get("word_limit") == 10000 and b.get("outline_vs_limit") == -1000,
+          "outline word budget vs limit", results)
+    check(b.get("research_questions_without_section") == ["RQ2"], "research question with no section flagged", results)
+    check(b.get("chapters_over_budget") == ["2"], "chapter whose sections exceed its budget flagged", results)
+    check('"title": "Banks"' in html, "outline titles parsed without budget and RQ parts", results)
     disc = root / "sessions" / "2024-01-01-discuss-test.json"
     disc.write_text(json.dumps({
         "question": "Test question?", "date": "2024-01-01",

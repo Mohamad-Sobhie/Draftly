@@ -38,7 +38,7 @@ If `thesis-brief.md` does not exist yet, run **Setup** from the skill and create
 - AI-use declaration required: yes | no | unclear
 
 ## Outline
-<!-- One line per section, numbered, e.g. "- 3.1 Entity-based regulation of NBFIs". The library page uses these numbers to find coverage gaps. -->
+<!-- Written by "/draftly outline". One line per chapter or section: "- 3 Title · 4,000 words · RQ1, RQ2 · purpose", sections indented as "  - 3.1 Title · 1,500 words · RQ1 · purpose". Only the number and title are required. The library page and Status use these numbers. -->
 
 ## Key terms and definitions
 

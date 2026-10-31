@@ -133,3 +133,38 @@ Next line: *Next: write the briefing · debate the two strongest*.
 </div>
 ```
 Count the bar segments from the briefing's findings (one per finding, by perspective); flag any perspective behind 40%+ and name any that's missing. Scores: no library source → 6 at most; pure pattern or opinion → 4 at most.
+
+## Outline (table of contents)
+
+One card per chapter; sections as rows inside it. Use a neutral accent (`--a:var(--text-secondary)`) for chapters - the perspective colours are reserved for Discuss. When showing two alternative structures, put a small label above each set ("Structure A · thematic", "Structure B · comparative") using `.pl`, and one line on what each is good for inside a `.bx` above its chapters.
+
+```html
+<div class="pc" style="--a:var(--text-secondary);--t:var(--surface-1)">
+  <div class="ph"><div class="pi" style="font-size:13px;font-weight:500">3</div>
+    <div class="pn">Regulating through banks</div><div class="pt">4,500 words · RQ1</div></div>
+  <p style="color:var(--text-secondary)">one-line purpose of the chapter</p>
+  <div class="row"><div style="width:34px;font-size:13px;color:var(--text-secondary)">3.1</div>
+    <div style="flex:1"><p>Entity-based tools</p><p style="font-size:12px;color:var(--text-secondary)">bank exposure limits and reporting</p></div>
+    <div style="text-align:right;white-space:nowrap"><div style="font-size:12px">2,500 w</div><span class="tg ok">2 sources</span></div></div>
+  <div class="row"><div style="width:34px;font-size:13px;color:var(--text-secondary)">3.2</div>
+    <div style="flex:1"><p>Limits of the approach</p></div>
+    <div style="text-align:right;white-space:nowrap"><div style="font-size:12px">2,000 w</div><span class="tg nd">needs: 2022 LDI analysis</span></div></div>
+</div>
+```
+
+Budget bar (once, under the chapters) - one segment per chapter, proportional to its budget, with the total vs the limit:
+
+```html
+<div class="bx"><div class="pl">Word budget · 15,000 of 15,000</div>
+  <div style="display:flex;height:10px;border-radius:5px;overflow:hidden;gap:2px;margin:8px 0">
+    <div style="flex:1500;background:var(--border-strong)"></div><div style="flex:3000;background:var(--text-secondary)"></div> ...
+  </div>
+  <p style="font-size:13px;color:var(--text-secondary)">1 Intro 1,500 · 2 Risk 3,000 · 3 Banks 4,500 · 4 Backstops 4,000 · 5 Conclusion 2,000</p>
+</div>
+```
+
+Checks card (only if there's something to flag), with `.nd` tags: "RQ3 has no section", "Chapter 2's sections add up to 3,500 of 3,000 words", "No comparison chapter for a comparative question".
+
+When editing, mark changed rows with a small tag before the title: `<span class="tg nd">changed</span>`, `<span class="tg ok">new</span>`, `<span class="tg" style="background:var(--bg-danger);color:var(--text-danger)">removed</span>` (keep removed rows, struck through: `style="text-decoration:line-through;color:var(--text-secondary)"`), and show renumbering as "2.2 → 3.1" in the number column.
+
+*Next:* line: creating → *Next: "use A" / "use B" · or tell me what to change*; editing → *Next: "go" to save · or tell me what else to change*.

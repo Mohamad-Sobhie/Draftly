@@ -96,9 +96,38 @@ def parse_outline(brief: Path) -> list[dict]:
     out = []
     for line in m.group(1).splitlines():
         mm = re.match(r"^\s*(?:[-*]\s*)?(?:Chapter\s+)?(\d{1,2}(?:\.\d{1,2}){0,3})\.?\s+(.+?)\s*$", line, re.I)
-        if mm:
-            out.append({"num": mm.group(1), "title": mm.group(2)})
+        if not mm:
+            continue
+        # "3.1 Title · 1,500 words · RQ1, RQ2 · purpose"
+        parts = [x.strip() for x in re.split(r"\s+[\u00b7|]\s+", mm.group(2))]
+        item = {"num": mm.group(1), "title": parts[0], "words": None, "rqs": [], "purpose": ""}
+        for part in parts[1:]:
+            w = re.match(r"^~?([\d,]+)\s*words?$", part, re.I)
+            if w:
+                item["words"] = int(w.group(1).replace(",", ""))
+            elif re.match(r"^RQ\s*\d", part, re.I):
+                item["rqs"] = [f"RQ{n}" for n in re.findall(r"RQ\s*(\d+)", part, re.I)]
+            else:
+                item["purpose"] = part
+        out.append(item)
     return out
+
+
+def parse_brief_numbers(brief: Path) -> tuple[int | None, int]:
+    """Word limit and number of research questions from the thesis brief."""
+    if not brief.exists():
+        return None, 0
+    text = brief.read_text(encoding="utf-8")
+    limit = None
+    m = re.search(r"Word limit[^:]*:\s*([^\n]*)", text, re.I)
+    if m:
+        nums = [int(n.replace(",", "")) for n in re.findall(r"\d[\d,]*", m.group(1)) if int(n.replace(",", "")) >= 1000]
+        limit = nums[0] if nums else None
+    rq = 0
+    m = re.search(r"Research question\(?s?\)?:[^\n]*\n((?:[ \t]+\S[^\n]*\n?)*)", text, re.I)
+    if m:
+        rq = len(re.findall(r"^[ \t]+(?:RQ)?\d+[.):]\s*\S", m.group(1), re.M | re.I))
+    return limit, rq
 
 
 def parse_bibliography(root: Path, brief: Path) -> list[str]:
@@ -187,9 +216,30 @@ def build(root: Path, out: Path) -> dict:
         "pinpoint_needed": sum(d["pinpoint_needed"] for d in drafts),
         "drafts": len(drafts),
         "sections_without_sources": [s["num"] for s in outline if not s["sources"]],
+        **outline_checks(outline, brief),
         "maybe": [s["id"] for s in sources if any(t.lower() == "maybe" for t in s["tags"])],
         "bibliography_without_pdf": len(bib_missing),
     }
+
+
+def outline_checks(outline: list[dict], brief: Path) -> dict:
+    if not outline:
+        return {}
+    limit, n_rq = parse_brief_numbers(brief)
+    chapters = [s for s in outline if "." not in s["num"]]
+    budgeted = [s for s in chapters if s["words"]] or [s for s in outline if s["words"]]
+    total = sum(s["words"] for s in budgeted) if budgeted else None
+    used = {r for s in outline for r in s["rqs"]}
+    res = {"outline_sections": len(outline), "outline_words": total, "word_limit": limit}
+    if total and limit:
+        res["outline_vs_limit"] = total - limit
+    if n_rq:
+        res["research_questions_without_section"] = [f"RQ{i}" for i in range(1, n_rq + 1) if f"RQ{i}" not in used]
+    for ch in chapters:  # sections that add up to more than their chapter's budget
+        subs = [s["words"] or 0 for s in outline if s["num"].startswith(ch["num"] + ".") and s["num"].count(".") == 1]
+        if ch["words"] and subs and sum(subs) > ch["words"]:
+            res.setdefault("chapters_over_budget", []).append(ch["num"])
+    return res
 
 
 def render(data: dict) -> str:
