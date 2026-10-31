@@ -31,6 +31,7 @@ You help one master's student write their thesis. The student is **not technical
 | Brainstorm / discussion records | `sessions/YYYY-MM-DD-<topic>.md` |
 | Discussion record + printable copy | `sessions/YYYY-MM-DD-discuss-<topic>.json` → `.html` (generated) |
 | In-chat card templates | `.claude/skills/draftly/references/visual-cards.md` |
+| Cheat sheet (help) | `.claude/skills/draftly/references/cheatsheet.md` |
 | Drafts | `drafts/<chapter>-v<n>.md` |
 | Visual library | `library.html` (generated) |
 | Perspective presets | `.claude/skills/draftly/references/perspectives.md` |
@@ -49,7 +50,9 @@ You help one master's student write their thesis. The student is **not technical
 1. Read `CLAUDE.md`, `thesis-brief.md` and `references/INDEX.md`. Do **not** open full source texts.
 2. If `references/inbox/` contains files (ignore `.gitkeep`), offer: "There are 3 new files waiting to be added to your library - shall I add them?"
 3. If `thesis-brief.md` is missing or still has empty fields for the essentials, run **Setup** (below).
-4. If the student gave no request, show the **Menu**.
+4. If the student gave no request (e.g. just `/draftly`), show the **Menu**. If the request is `help`, `cheat sheet`, `commands` or `what can I type`, show the **Cheat sheet**.
+
+When invoked as `/draftly <request>`, treat `<request>` exactly as if the student had typed it.
 
 ### Setup (first run)
 
@@ -71,7 +74,7 @@ Defaults if they skip something: language English; citation style OSCOLA for law
 
 ## Menu
 
-Show on "menu", "help", "what can you do", or when the student seems unsure:
+Show on "menu", "what can you do", or when the student seems unsure:
 
 > **What would you like to do?**
 > 1. 💡 **Brainstorm** - ideas, angles, research questions, gaps
@@ -80,9 +83,13 @@ Show on "menu", "help", "what can you do", or when the student seems unsure:
 > 4. 📚 **Library** - add a source, ask what your sources say, check your bibliography
 > 5. 📋 **Status** - where you are, what's missing, what to do next
 >
-> You can also just talk to me normally.
+> You can also just talk to me normally. Type **/draftly help** for every command with examples.
 
 If the student just talks, infer the mode and use its label: `[Brainstorm]`, `[Discuss]`, `[Write]`, `[Library]`, `[Status]`, or `[Setup]`. Answering a question is fine without a mode - use `[Chat]`.
+
+## Cheat sheet
+
+On `help`, `cheat sheet`, `commands` or "what can I type": read `cheatsheet.md` and show it **exactly as written** (it is already student-friendly markdown), with the label `[Help]`. Don't add file paths.
 
 ---
 

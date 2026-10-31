@@ -161,7 +161,7 @@ Open the **Claude** app, go to **Code**, and open your **draftly** thesis folder
 4. 📚 **Library**: your sources. *"What do my sources say about liquidity mismatch?"*
 5. 📋 **Status**: where you are, what's missing, what to do next. *"Where am I?"*
 
-You don't have to use the menu: just say what you need.
+You don't have to use the menu: just say what you need. Type **/draftly help** for a cheat sheet of everything you can ask, with examples.
 
 ### Adding a source
 
