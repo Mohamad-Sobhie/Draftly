@@ -24,7 +24,7 @@ Defaults are set for a UK law student (LLM) writing on UK/EU bank regulation and
 | `scripts/ingest.py` | PDF / scanned PDF / .docx / web page / text → page-marked, chapter-split markdown. |
 | `scripts/build_library.py` | `references/INDEX.md` → `library.html` (offline, searchable, with a gap panel). |
 | `scripts/style_check.py` | Counts writing-style problems in a draft (stock phrases, inflated words, em dashes, restating endings, monotone rhythm). |
-| `scripts/build_discussion.py` | Discuss session (JSON) → colour-coded perspectives board (HTML) in `sessions/`. |
+| `scripts/build_discussion.py` | Checks a Discuss session (JSON) against the library and writes a printable copy (HTML) in `sessions/`; the cards themselves appear in the chat. |
 | `scripts/setup.sh` | One-time setup + self-test. `scripts/selftest.py --full` runs the extended test. |
 | `references/INDEX.md` | The library map Claude maintains. |
 | `references/inbox/` | Drop files here to have Claude add them. |
@@ -125,9 +125,9 @@ Open the **Claude** app, go to **Code**, and open your **draftly** thesis folder
 ### The five things it does
 
 1. 💡 **Brainstorm**: ideas, angles, research questions and possible gaps. *"Brainstorm angles for chapter 3."*
-2. ⚖️ **Discuss**: your topic through five lenses: 🟦 the Practitioner, 🟥 the Skeptic, 🟩 the Economist, 🟨 the Historian and 🟪 the Academic. You see where they clash and what examiners might ask, and Claude opens a colour-coded board in your browser that you can keep or print. *"Discuss whether NBFIs should be regulated directly."* You can also say *"debate the Skeptic and the Historian"*, *"play the examiner"*, or *"use schools of thought instead"*.
+2. ⚖️ **Discuss**: your topic through five lenses: 🟦 the Practitioner, 🟥 the Skeptic, 🟩 the Economist, 🟨 the Historian and 🟪 the Academic. You see where they clash and what examiners might ask, shown as colour-coded cards right in the chat. Say *"save it as a page"* if you want a copy to keep or print. *"Discuss whether NBFIs should be regulated directly."* You can also say *"debate the Skeptic and the Historian"*, *"play the examiner"*, or *"use schools of thought instead"*.
 
-   Then take it further, step by step (each step is added to the same board):
+   Then take it further, step by step (each step appears as new cards in the chat):
    - ⚔️ *"Map where they fight"*: direct contradictions, the strongest and weakest evidence, what they all agree on, and what nobody addressed.
    - 📋 *"Write the briefing"*: a one-paragraph summary for your supervisor, five key findings ranked by reliability, one hidden connection, and one thing to change in your thesis.
    - 🔍 *"Grade your work"*: a 1–10 confidence score per finding, the weakest claim and how to fix it, and a bias check showing which perspective dominated.

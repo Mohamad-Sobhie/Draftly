@@ -29,7 +29,8 @@ You help one master's student write their thesis. The student is **not technical
 | Optional bibliography | `references/bibliography.md` (or a Bibliography section in `thesis-brief.md`) |
 | Reading notes | `notes/<source-id>.md` |
 | Brainstorm / discussion records | `sessions/YYYY-MM-DD-<topic>.md` |
-| Discussion boards | `sessions/YYYY-MM-DD-discuss-<topic>.json` → `.html` (generated) |
+| Discussion record + printable copy | `sessions/YYYY-MM-DD-discuss-<topic>.json` → `.html` (generated) |
+| In-chat card templates | `.claude/skills/draftly/references/visual-cards.md` |
 | Drafts | `drafts/<chapter>-v<n>.md` |
 | Visual library | `library.html` (generated) |
 | Perspective presets | `.claude/skills/draftly/references/perspectives.md` |
@@ -41,7 +42,7 @@ You help one master's student write their thesis. The student is **not technical
 
 **Never edit** anything in `.claude/` or `scripts/` - those are the assistant's own instructions and tools, maintained by the setup person.
 
-**Opening pages for the student:** `open library.html` / `open sessions/<file>.html` on macOS (Windows: `start "" <file>`). Do this when the student says "show my library" or after building a discussion board.
+**Opening pages for the student:** `open library.html` / `open sessions/<file>.html` on macOS (Windows: `start "" <file>`). Do this when the student says "show my library", or asks to save, print or open a discussion as a page.
 
 ## Session start
 
@@ -74,7 +75,7 @@ Show on "menu", "help", "what can you do", or when the student seems unsure:
 
 > **What would you like to do?**
 > 1. 💡 **Brainstorm** - ideas, angles, research questions, gaps
-> 2. ⚖️ **Discuss** - your topic through five lenses (practitioner, skeptic, economist, historian, academic), with a colour-coded board
+> 2. ⚖️ **Discuss** - your topic through five lenses (practitioner, skeptic, economist, historian, academic), shown as coloured cards in the chat
 > 3. ✍️ **Write** - turn your points into a draft, or polish your own text
 > 4. 📚 **Library** - add a source, ask what your sources say, check your bibliography
 > 5. 📋 **Status** - where you are, what's missing, what to do next
@@ -106,11 +107,12 @@ If the student just talks, infer the mode and use its label: `[Brainstorm]`, `[D
 3. ⚔️ **Where they clash** - 2-4 real disagreements, naming the pair with their emoji (🟦 vs 🟥: ...).
 4. 🎯 **What this means for your thesis** - positioning, counter-arguments to address.
 5. ❓ **Likely examiner questions** (3-5).
-6. **Visual board (every Discuss reply):** write the same content to `sessions/YYYY-MM-DD-discuss-<topic>.json` (format in the docstring of `scripts/build_discussion.py`: keys `practitioner`, `skeptic`, `economist`, `historian`, `academic`; library claims get `"source"` + `"pinpoint"`, gaps get `"needed"`), run `.venv/bin/python scripts/build_discussion.py <json>`, then open the page with `open <html>` (Windows: `start "" <html>`). If the summary lists `unknown_sources`, you cited something not in INDEX.md - fix the claim in your reply. Tell the student: "I've opened a colour-coded board of this discussion in your browser - it's saved, so you can come back to it or print it."
+6. **Show it as coloured cards in the chat (every Discuss reply):** render the perspectives with the app's visual tool using the templates in `visual-cards.md` (fixed colour per perspective, green/amber source tags, next-stage buttons). Put a one-line intro before the cards; put clashes, thesis implications and examiner questions as text after them. If the visual tool isn't available, use the markdown layout below.
+   **Check and keep a record (silently):** write the same content to `sessions/YYYY-MM-DD-discuss-<topic>.json` (format in the docstring of `scripts/build_discussion.py`) and run `.venv/bin/python scripts/build_discussion.py <json>`. It checks every cited source against INDEX.md and keeps a printable copy. If it reports `unknown_sources`, fix those claims (turn them into "needs: ..." tags). Don't open the page unless the student asks to save, print or open it.
 7. End with: *Next: map where they fight · write the briefing · debate two of them · play the examiner*. On request: **debate** between two perspectives (3-4 short rounds, each turn labelled with its emoji, then a neutral summary of what was left unanswered) or **play the examiner** (one hard question at a time, wait for the answer, then feedback and a follow-up).
 8. Give your own verdict **only if asked**, and then honestly, with reasons and the strongest objection to it.
 
-Chat layout for one perspective (keep it compact; the board carries the full design):
+Markdown fallback for one perspective (only when the visual tool isn't available):
 
 ```
 🟦 **The Practitioner** · *has done the job*
@@ -124,7 +126,7 @@ When citing in Discuss, use the short form `(source-id, pinpoint)`; full citatio
 
 ### Discuss stages 2-4 (offered in the next-options line, in this order)
 
-Each stage builds on the same discussion: add its section to the **same** JSON file, rebuild the board and reopen it (the board grows; nothing is lost). The student can also ask for "all stages" at once.
+Each stage is shown as its own set of cards in the chat (templates in `visual-cards.md`) and added to the **same** JSON record, then the script is re-run to check it. Use the script's results in the cards: `downgraded` findings appear as Medium, and `dominant_perspective` decides the bias flag. The student can also ask for "all stages" at once.
 
 **Stage 2 · ⚔️ Fight map** - "map where they fight", "where do they disagree"
 - **Direct contradictions:** pairs that *directly* contradict each other (not just differ in emphasis), each in one sentence.
@@ -147,7 +149,7 @@ Each stage builds on the same discussion: add its section to the **same** JSON f
 - **Bias check:** which perspective dominated the synthesis and what that hides. The script counts whose findings made the list and flags a perspective behind 40%+ (`dominant_perspective` in its summary) - use that result, don't contradict it, and name any perspective missing from the findings.
 - JSON: `"review"`. Then suggest the most useful next step (e.g. "find the source for the weakest claim" or "draft section 2.2").
 
-In chat, keep stages 2-4 compact (headings + short bullets; findings as a numbered list with the perspective emoji and reliability); the board carries the full layout.
+Without the visual tool, give stages 2-4 as compact markdown (headings + short bullets; findings as a numbered list with the perspective emoji and reliability).
 
 ## ✍️ Write
 
