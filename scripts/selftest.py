@@ -207,6 +207,40 @@ def quick(tmp: Path, results: list) -> None:
     check("testauthor-2024-shadow" in html and "template-id" not in html, "entry rendered, template ignored", results)
     check(b.get("citation_needed") == 1 and b.get("pinpoint_needed") == 1, "citation markers counted", results)
     check(b.get("sections_without_sources") == ["1"], "sections without sources detected", results)
+    disc = root / "sessions" / "2024-01-01-discuss-test.json"
+    disc.write_text(json.dumps({
+        "question": "Test question?", "date": "2024-01-01",
+        "perspectives": [
+            {"key": "practitioner", "position": "P view", "only": "Only P",
+             "evidence": [{"claim": "Backed claim", "source": "testauthor-2024-shadow", "pinpoint": "p 2"},
+                          {"claim": "Gap claim", "needed": "supervisory data"}]},
+            {"key": "skeptic", "position": "S view",
+             "evidence": [{"claim": "Invented", "source": "nobody-2099-fake"}]},
+            {"key": "custom", "name": "Regulate the activity", "tagline": "functional view", "position": "C view"}],
+        "clashes": [{"between": ["practitioner", "skeptic"], "text": "Where risk sits"}],
+        "thesis": "Positioning", "examiner": ["Q1?"],
+        "fight": {"strongest": {"key": "practitioner", "why": "sourced"}, "agree": ["Common ground"],
+                  "blind_spots": ["Nobody covered X"]},
+        "briefing": {"summary": "Summary para", "hidden_connection": "Link", "do_differently": "Add 2.2",
+                     "findings": [{"text": "Sourced finding", "key": "practitioner", "reliability": "high",
+                                   "sources": ["testauthor-2024-shadow"]},
+                                  {"text": "Unsourced finding", "key": "practitioner", "reliability": "high"},
+                                  {"text": "Skeptic finding", "key": "skeptic", "reliability": "low"}]},
+        "review": {"scores": [{"finding": 1, "score": 9}, {"finding": 2, "score": 5}],
+                   "weakest_claim": {"text": "Skeptic finding", "why": "thin"}, "bias": "Leans practitioner"}}),
+        encoding="utf-8")
+    d = run("build_discussion.py", str(disc), "--root", str(root))
+    board = disc.with_suffix(".html").read_text() if disc.with_suffix(".html").exists() else ""
+    check(d.get("ok") is True and "The Practitioner" in board and "Regulate the activity" in board,
+          "discussion board built (preset + custom perspectives)", results)
+    check('class="src ok"' in board and "testauthor-2024-shadow, p 2" in board, "library-backed claim shown green", results)
+    check(d.get("unknown_sources") == ["nobody-2099-fake"] and "nobody-2099-fake" not in board,
+          "source not in the library is never shown as backed", results)
+    check(all(t in board for t in ("Where they fight", "What nobody addressed", "Research briefing",
+                                    "Hidden connection", "Peer review", "Weakest claim", "9/10")),
+          "fight map, briefing and peer review rendered", results)
+    check(d.get("downgraded") == ["Unsourced finding"], "unsourced 'high' finding downgraded to medium", results)
+    check(d.get("dominant_perspective") == "practitioner", "bias check flags the dominant perspective", results)
     check("http://" not in html.replace("http://www.w3.org", "") and "https://" not in html and "<link" not in html,
           "library.html is self-contained (no external resources)", results)
 

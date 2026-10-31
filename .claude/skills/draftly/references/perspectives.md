@@ -1,12 +1,39 @@
-# Discuss-mode perspective presets
+# Discuss-mode perspectives
 
-Pick 3-4 perspectives that fit the student's field and research question. Presets are starting points: rename, merge or add perspectives when the question calls for it. Always steelman. Ground each perspective in the library (source-id + page) or say that the library doesn't cover it yet.
+## Default: the five research perspectives
 
-Each preset lists: the perspective name, its core position, typical arguments, the kinds of sources that usually support it, and typical examiner questions. **The "typical sources" are kinds of sources to look for, not references to cite.**
+Use these five for every Discuss request unless the student asks for something else. Always show all five, in this order, with these colours (chat emoji = board colour):
+
+| Emoji | Key | Name | Tagline | Lens |
+|---|---|---|---|---|
+| 🟦 | `practitioner` | The Practitioner | has done the job | Real-world application: what happens on the ground when people live this topic daily (the supervisor, the fund manager, the trustee, the official). |
+| 🟥 | `skeptic` | The Skeptic | doubts the consensus | Devil's advocate: why the common consensus or surface-level assumption is fundamentally wrong. |
+| 🟩 | `economist` | The Economist | follows the money | Resource constraints, financial incentives, funding, costs, who pays and who gains. |
+| 🟨 | `historian` | The Historian | has seen this before | Long-term patterns, recurring cycles, precedents, and what history says about how this plays out. |
+| 🟪 | `academic` | The Academic | read the studies | Theory, empirical data, studies and literature reviews, judged by rigorous research criteria. |
+
+### Applying them to the student's topic
+- Translate each lens into the field. Law/finance regulation (NBFIs) example:
+  - 🟦 Practitioner: PRA/FCA/ECB supervisors, fund managers, pension trustees, central bank market operations - what they can actually monitor and enforce.
+  - 🟥 Skeptic: attacks the dominant framing (e.g. "regulate through banks", or "same activity, same risk").
+  - 🟩 Economist: leverage and liquidity incentives, cost of capital, who bears losses, moral hazard of backstops, competitiveness objectives.
+  - 🟨 Historian: 2008 shadow banking, the March 2020 "dash for cash", the 2022 gilt/LDI episode, earlier reform cycles.
+  - 🟪 Academic: law-and-economics and regulatory theory, empirical interconnectedness studies, quality of the evidence.
+- Each perspective must **take a position** on the student's question - not five neutral summaries.
+- **Only they'd say:** one sharp line no other perspective would say. It's a characterisation, not a quote - never attribute it to a real person.
+- **Evidence:** 2-3 claims. Each claim is either backed by a library source (source-id + pinpoint) or marked as needing a source, naming the *kind* of source. Never invent a reference.
+- The Skeptic steelmans the contrarian case; nobody gets a strawman.
+
+### Alternative: schools of thought
+If the student asks for "schools of thought", "the regulatory/legal positions" or a field preset, use 3-4 perspectives from the presets below instead. On the board they take the remaining colours automatically (give each a `name`, `tagline` and one-character `icon`).
 
 ---
 
-## 1. Law - financial regulation (default for UK/EU bank regulation, NBFI, systemic risk)
+# Schools-of-thought presets
+
+Presets are starting points: rename, merge or add perspectives when the question calls for it. Each lists the core position, typical arguments, the kinds of sources that usually support it, and typical examiner questions. **The "typical sources" are kinds of sources to look for, not references to cite.**
+
+## 1. Law - financial regulation (UK/EU bank regulation, NBFI, systemic risk)
 
 ### A. Regulate through banks (entity-based / indirect)
 - **Core position:** Systemic risk from NBFIs is best contained at the point where it touches the regulated banking system - bank exposures, counterparty credit risk, step-in risk, large exposures and leverage limits.

@@ -23,6 +23,7 @@ Defaults are set for a UK law student (LLM) writing on UK/EU bank regulation and
 | `.claude/settings.json` | Pre-approved permissions so the student isn't flooded with prompts. |
 | `scripts/ingest.py` | PDF / scanned PDF / .docx / web page / text → page-marked, chapter-split markdown. |
 | `scripts/build_library.py` | `references/INDEX.md` → `library.html` (offline, searchable, with a gap panel). |
+| `scripts/build_discussion.py` | Discuss session (JSON) → colour-coded perspectives board (HTML) in `sessions/`. |
 | `scripts/setup.sh` | One-time setup + self-test. `scripts/selftest.py --full` runs the extended test. |
 | `references/INDEX.md` | The library map Claude maintains. |
 | `references/inbox/` | Drop files here to have Claude add them. |
@@ -67,7 +68,8 @@ The script creates a local `.venv`, installs the Python packages, checks for pop
 
 - Default mode `acceptEdits`: Claude can create and edit files inside the project without asking each time.
 - Pre-approved: the helper scripts via the project `.venv` Python, reading/editing within the project, reading `~/Downloads` (added as an additional directory, so "the PDF I just downloaded" works), web search, and fetches from DOI/Crossref and the main UK/EU legal and regulator sites (for bibliography checks).
-- Denied: `rm`, `sudo`, `git push/reset/clean`, editing anything in `~/Downloads`, and editing `.claude/` or `scripts/` (so the student's Claude can't accidentally change its own skill or tools). To change the skill or scripts, edit them in a normal editor or pull an update; deny rules can't be overridden from `settings.local.json`.
+- Pre-approved too: opening `library.html` and discussion boards in the browser.
+- Denied: `rm`, `sudo`, and editing anything in `~/Downloads`. The skill tells Claude never to edit its own `.claude/` or `scripts/` files.
 - Claude Code only applies these project permissions once the folder is **trusted**: the first time you open it, accept the "trust this folder" prompt.
 - Nothing destructive outside the project is pre-approved. Downloads are only read; the original file is copied by default.
 - Machine-specific tweaks go in `.claude/settings.local.json` (git-ignored).
@@ -103,6 +105,7 @@ To customise: edit `.claude/skills/draftly/SKILL.md` (keep it under ~500 lines),
 .venv/bin/python scripts/ingest.py <file> --check-only     # duplicate check
 .venv/bin/python scripts/ingest.py --list-downloads        # recent files in ~/Downloads
 .venv/bin/python scripts/build_library.py
+.venv/bin/python scripts/build_discussion.py sessions/<file>.json
 .venv/bin/python scripts/selftest.py --full                # extended test with generated fixtures
 ```
 
@@ -121,7 +124,12 @@ Open the **Claude** app, go to **Code**, and open your **draftly** thesis folder
 ### The five things it does
 
 1. 💡 **Brainstorm**: ideas, angles, research questions and possible gaps. *"Brainstorm angles for chapter 3."*
-2. ⚖️ **Discuss**: your topic from several viewpoints, where they clash, and what examiners might ask. *"Discuss whether NBFIs should be regulated directly."* You can also say *"play the examiner"* or *"run a debate"*.
+2. ⚖️ **Discuss**: your topic through five lenses: 🟦 the Practitioner, 🟥 the Skeptic, 🟩 the Economist, 🟨 the Historian and 🟪 the Academic. You see where they clash and what examiners might ask, and Claude opens a colour-coded board in your browser that you can keep or print. *"Discuss whether NBFIs should be regulated directly."* You can also say *"debate the Skeptic and the Historian"*, *"play the examiner"*, or *"use schools of thought instead"*.
+
+   Then take it further, step by step (each step is added to the same board):
+   - ⚔️ *"Map where they fight"*: direct contradictions, the strongest and weakest evidence, what they all agree on, and what nobody addressed.
+   - 📋 *"Write the briefing"*: a one-paragraph summary for your supervisor, five key findings ranked by reliability, one hidden connection, and one thing to change in your thesis.
+   - 🔍 *"Grade your work"*: a 1–10 confidence score per finding, the weakest claim and how to fix it, and a bias check showing which perspective dominated.
 3. ✍️ **Write**: turns **your** points into a draft, or polishes your own text. *"Here are my points for 3.2, draft it."* Every draft is saved as a new version, so nothing is lost.
 4. 📚 **Library**: your sources. *"What do my sources say about liquidity mismatch?"*
 5. 📋 **Status**: where you are, what's missing, what to do next. *"Where am I?"*

@@ -6,13 +6,20 @@
     "allow": [
       "Bash(.venv/bin/python scripts/ingest.py:*)",
       "Bash(.venv/bin/python scripts/build_library.py:*)",
+      "Bash(.venv/bin/python scripts/build_discussion.py:*)",
       "Bash(.venv/bin/python scripts/selftest.py:*)",
       "Bash(.venv\\Scripts\\python.exe scripts\\ingest.py:*)",
       "Bash(.venv\\Scripts\\python.exe scripts\\build_library.py:*)",
+      "Bash(.venv\\Scripts\\python.exe scripts\\build_discussion.py:*)",
       "Bash(.venv/Scripts/python.exe scripts/ingest.py:*)",
       "Bash(.venv/Scripts/python.exe scripts/build_library.py:*)",
+      "Bash(.venv/Scripts/python.exe scripts/build_discussion.py:*)",
       "Bash(bash scripts/setup.sh)",
       "Bash(scripts/setup.sh)",
+      "Bash(open library.html)",
+      "Bash(open sessions/:*)",
+      "Bash(start \"\" library.html)",
+      "Bash(start \"\" sessions\\:*)",
       "Read(./**)",
       "Edit(./**)",
       "Read(~/Downloads/**)",
@@ -33,12 +40,7 @@
     "deny": [
       "Bash(rm:*)",
       "Bash(sudo:*)",
-      "Bash(git push:*)",
-      "Bash(git reset:*)",
-      "Bash(git clean:*)",
-      "Edit(~/Downloads/**)",
-      "Edit(./.claude/**)",
-      "Edit(./scripts/**)"
+      "Edit(~/Downloads/**)"
     ]
   }
 }
