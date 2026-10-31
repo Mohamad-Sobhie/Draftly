@@ -8,12 +8,12 @@
 | edit on the board, then **Copy changes** and paste | your edits, shown for checking, saved on **go** |
 | `/draftly outline: [change]` | or just say it: `merge 2.1 and 2.2` · `give chapter 3 500 more words` |
 
-### ⚖️ Discuss your question (the five perspectives)
+### ⚖️ Discuss your question
 🟦 Practitioner · 🟥 Skeptic · 🟩 Economist · 🟨 Historian · 🟪 Academic
 
 | Type | You get |
 |---|---|
-| `/draftly discuss [your question]` | the five perspectives as coloured cards |
+| `/draftly discuss [your question]` | your question through five lenses, as coloured cards |
 | `map where they fight` | where they contradict each other, and what nobody covered |
 | `write the briefing` | a summary for your supervisor and 5 key findings |
 | `grade your work` | how confident each finding is, and the weakest claim |

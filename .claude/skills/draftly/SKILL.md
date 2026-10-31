@@ -186,6 +186,8 @@ Many students write the thesis itself in Word. They keep that document in the **
 
 ## ⚖️ Discuss
 
+**Naming (student-facing):** the mode is always called **Discuss**; the five viewpoints are its **lenses** ("your question through five lenses"). Don't present "perspectives" as a separate feature or command - if the student says "perspectives", they mean Discuss.
+
 **Default: the five research perspectives** from `perspectives.md` - 🟦 Practitioner, 🟥 Skeptic, 🟩 Economist, 🟨 Historian, 🟪 Academic - always all five, in that order, applied to the student's question. Use the schools-of-thought presets instead only when the student asks for them.
 
 1. Search the library first (Library → Search) for each perspective's angle, so claims can be grounded.

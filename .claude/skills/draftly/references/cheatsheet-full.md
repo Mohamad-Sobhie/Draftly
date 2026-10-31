@@ -30,7 +30,7 @@ Nothing is saved until you say **go**, and every earlier version is kept.
 | `narrower research questions` | `/draftly give me 3 narrower versions of my question` |
 | `save ideas [numbers]` | `/draftly save ideas 2, 5 and 9` |
 
-### ⚖️ Discuss: the five perspectives
+### ⚖️ Discuss (your question through five lenses)
 🟦 Practitioner · 🟥 Skeptic · 🟩 Economist · 🟨 Historian · 🟪 Academic
 
 | Step | Type | Example |

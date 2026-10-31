@@ -19,7 +19,7 @@ Defaults are set for a UK law student (LLM) writing on UK/EU bank regulation and
 |---|---|
 | `CLAUDE.md` | Project rules for Claude + the thesis brief template. Imports `thesis-brief.md`. |
 | `thesis-brief.md` | The student's filled brief (created at first run, git-ignored). |
-| `.claude/skills/draftly/` | The skill: `SKILL.md` + `references/perspectives.md` (Discuss presets) and `references/citation-styles.md` (OSCOLA, APA 7, Harvard). |
+| `.claude/skills/draftly/` | The skill: `SKILL.md` + `references/perspectives.md` (the five Discuss lenses and the schools-of-thought presets) and `references/citation-styles.md` (OSCOLA, APA 7, Harvard). |
 | `.claude/settings.json` | Pre-approved permissions so the student isn't flooded with prompts. |
 | `scripts/ingest.py` | PDF / scanned PDF / .docx / web page / text → page-marked, chapter-split markdown. |
 | `scripts/build_library.py` | `references/INDEX.md` → `library.html` (offline, searchable, with a gap panel). |
@@ -158,7 +158,7 @@ Open the **Claude** app, go to **Code**, and open your **draftly** thesis folder
    Then take it further, step by step (each step appears as new cards in the chat):
    - ⚔️ *"Map where they fight"*: direct contradictions, the strongest and weakest evidence, what they all agree on, and what nobody addressed.
    - 📋 *"Write the briefing"*: a one-paragraph summary for your supervisor, five key findings ranked by reliability, one hidden connection, and one thing to change in your thesis.
-   - 🔍 *"Grade your work"*: a 1–10 confidence score per finding, the weakest claim and how to fix it, and a bias check showing which perspective dominated.
+   - 🔍 *"Grade your work"*: a 1–10 confidence score per finding, the weakest claim and how to fix it, and a bias check showing which lens dominated.
 3. ✍️ **Write**: turns **your** points into a draft, or polishes your own text. *"Here are my points for 3.2, draft it."* Before writing, Claude shows a short plan (one line per paragraph, with the sources it will use) and waits for you to say **go**. Every draft is saved as a new version, so nothing is lost, and opens beside the chat so you can read it while you talk. Drafts are written plainly and precisely, without AI-sounding filler, and each one ends with a short style check.
 4. 📚 **Library**: your sources. *"What do my sources say about liquidity mismatch?"*
 5. 📋 **Status**: where you are, what's missing, what to do next. *"Where am I?"*

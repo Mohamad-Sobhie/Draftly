@@ -21,7 +21,7 @@ Discuss output is shown **inside the chat** as coloured cards, using the Claude 
 - Source tags: library-backed → class `ok` (`var(--bg-success)` / `var(--text-success)`), text `source-id, pinpoint`. Gap → class `nd` (`var(--bg-warning)` / `var(--text-warning)`), text `needs: kind of source` or `not in your library yet`. Only sources that are in INDEX.md may get an `ok` tag.
 - **No buttons.** Clickable buttons (`sendPrompt`) don't work in the Claude Code app, so never add any. Next steps go in the reply's *Next:* line instead.
 - **Everything goes in the cards; nothing is repeated in text.** The reply around a widget is exactly:
-  1. one short intro line before it (e.g. "Here's your question through the five perspectives:"), and
+  1. one short intro line before it (e.g. "Here's your question through the five lenses:"), and
   2. one *Next:* line after it (e.g. *Next: map where they fight · write the briefing · play the examiner*).
   Never restate, summarise or list the cards' content in text - the student sees it once, in the cards. (The tool itself warns against duplicating what it shows.)
 - **If the visual tool isn't available** (e.g. the terminal version of Claude Code), give the same content as markdown with the chat emoji per perspective (layout in SKILL.md) - never paste raw HTML into the reply.
