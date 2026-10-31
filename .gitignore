@@ -1,0 +1,24 @@
+# --- The student's private material: never in the template repo ---
+references/pdf/*
+references/text/*
+references/inbox/*
+references/bibliography.md
+notes/*
+sessions/*
+drafts/*
+thesis-brief.md
+library.html
+!references/pdf/.gitkeep
+!references/text/.gitkeep
+!references/inbox/.gitkeep
+!notes/.gitkeep
+!sessions/.gitkeep
+!drafts/.gitkeep
+
+# --- Local tooling ---
+.venv/
+__pycache__/
+*.pyc
+.claude/settings.local.json
+.DS_Store
+Thumbs.db

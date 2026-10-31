@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "defaultMode": "acceptEdits",
+    "additionalDirectories": ["~/Downloads"],
+    "allow": [
+      "Bash(.venv/bin/python scripts/ingest.py:*)",
+      "Bash(.venv/bin/python scripts/build_library.py:*)",
+      "Bash(.venv/bin/python scripts/selftest.py:*)",
+      "Bash(.venv\\Scripts\\python.exe scripts\\ingest.py:*)",
+      "Bash(.venv\\Scripts\\python.exe scripts\\build_library.py:*)",
+      "Bash(.venv/Scripts/python.exe scripts/ingest.py:*)",
+      "Bash(.venv/Scripts/python.exe scripts/build_library.py:*)",
+      "Bash(bash scripts/setup.sh)",
+      "Bash(scripts/setup.sh)",
+      "Read(./**)",
+      "Edit(./**)",
+      "Read(~/Downloads/**)",
+      "WebSearch",
+      "WebFetch(domain:doi.org)",
+      "WebFetch(domain:api.crossref.org)",
+      "WebFetch(domain:www.legislation.gov.uk)",
+      "WebFetch(domain:eur-lex.europa.eu)",
+      "WebFetch(domain:curia.europa.eu)",
+      "WebFetch(domain:www.bankofengland.co.uk)",
+      "WebFetch(domain:www.fsb.org)",
+      "WebFetch(domain:www.bis.org)",
+      "WebFetch(domain:www.esma.europa.eu)",
+      "WebFetch(domain:www.esrb.europa.eu)",
+      "WebFetch(domain:www.ecb.europa.eu)",
+      "WebFetch(domain:www.fca.org.uk)"
+    ],
+    "deny": [
+      "Bash(rm:*)",
+      "Bash(sudo:*)",
+      "Bash(git push:*)",
+      "Bash(git reset:*)",
+      "Bash(git clean:*)",
+      "Edit(~/Downloads/**)",
+      "Edit(./.claude/**)",
+      "Edit(./scripts/**)"
+    ]
+  }
+}

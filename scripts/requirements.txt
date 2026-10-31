@@ -1,0 +1,12 @@
+# Core (installed by scripts/setup.sh into .venv)
+pypdf>=4.0
+pdfplumber>=0.11
+python-docx>=1.1
+beautifulsoup4>=4.12
+readability-lxml>=0.8.1
+lxml_html_clean>=0.1
+certifi>=2024.2.2
+
+# Optional OCR for scanned PDFs: install the system tools instead
+#   macOS:   brew install tesseract ocrmypdf poppler
+#   Windows: see README (Tesseract installer from UB Mannheim, poppler for Windows)
